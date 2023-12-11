@@ -41,9 +41,27 @@ class Solution:
 
         return []
 
+    def groupAnagrams(self, strs: list[str]) -> list[list[str]]:
+        """Given an array of strings strs, group the anagrams together. You can return the answer in any order.
+        An Anagram is a word or phrase formed by rearranging the letters of a different word or phrase, typically
+        using all the original letters exactly once."""
+
+        sorted_dict = {}
+        sorted_array = []
+
+        for word in strs:
+            sorted_word = ''.join(sorted(word))
+
+            if sorted_word not in sorted_dict:
+                sorted_dict[sorted_word] = len(sorted_array)
+                sorted_array.append([word])
+            else:
+                sorted_array[sorted_dict[sorted_word]].append(word)
+
+        return sorted_array
+
 
 solution = Solution()
-nums = [3, 2, 4]
-target = 6
-result = solution.twoSum(nums, target)
+strs = ["eat","tea","tan","ate","nat","bat"]
+result = solution.groupAnagrams(strs)
 print(result)
