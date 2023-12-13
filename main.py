@@ -3,6 +3,7 @@
 
 from collections import Counter
 
+
 class Solution:
     def containsDuplicate(self, nums: list[int]) -> bool:
         """Given an integer array nums, return true if any value appears at least twice in the array, and return false
@@ -70,9 +71,35 @@ class Solution:
         counter = Counter(nums)
         return [key for key, _ in counter.most_common(k)]
 
+    def productExceptSelf(self, nums: list[int]) -> list[int]:
+        """Given an integer array nums, return an array answer such that answer[i] is equal to the product of all the
+        elements of nums except nums[i].
+        The product of any prefix or suffix of nums is guaranteed to fit in a 32-bit integer.
+        You must write an algorithm that runs in O(n) time and without using the division operation."""
+
+        length = len(nums)
+        prefix = []
+        suffix = []
+        answer = []
+
+        prefix_sol = 1
+        suffix_sol = 1
+
+        for i in range(0, length):
+            prefix.append(prefix_sol)
+            prefix_sol *= nums[i]
+
+        for i in range(length-1, -1, -1):
+            suffix.append(suffix_sol)
+            suffix_sol *= nums[i]
+
+        for i in range(0, length):
+            answer.append(prefix[i] * suffix[length - i - 1])
+
+        return answer
+
 
 solution = Solution()
-nums = [1, 1, 1, 2, 2, 3, 3, 3, 3]
-k = 2
-result = solution.topKFrequent(nums, k)
+nums = [1,2,3,4]
+result = solution.productExceptSelf(nums)
 print(result)
