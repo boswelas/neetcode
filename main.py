@@ -1,6 +1,8 @@
 # 'NeetCode Roadmap'
 # 'Dec 11, 2023'
 
+from collections import Counter
+
 class Solution:
     def containsDuplicate(self, nums: list[int]) -> bool:
         """Given an integer array nums, return true if any value appears at least twice in the array, and return false
@@ -60,8 +62,17 @@ class Solution:
 
         return sorted_array
 
+    # 'Dec 13, 2023'
+    def topKFrequent(self, nums: list[int], k: int) -> list[int]:
+        """Given an integer array nums and an integer k, return the k most frequent elements.
+        You may return the answer in any order."""
+
+        counter = Counter(nums)
+        return [key for key, _ in counter.most_common(k)]
+
 
 solution = Solution()
-strs = ["eat","tea","tan","ate","nat","bat"]
-result = solution.groupAnagrams(strs)
+nums = [1, 1, 1, 2, 2, 3, 3, 3, 3]
+k = 2
+result = solution.topKFrequent(nums, k)
 print(result)
