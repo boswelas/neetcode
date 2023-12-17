@@ -98,8 +98,55 @@ class Solution:
 
         return answer
 
+    def isValidSudoku(self, board: list[list[str]]) -> bool:
+        """Determine if a 9 x 9 Sudoku board is valid. Only the filled cells need to be validated according to the
+        following rules:
+        Each row must contain the digits 1-9 without repetition.
+        Each column must contain the digits 1-9 without repetition.
+        Each of the nine 3 x 3 sub-boxes of the grid must contain the digits 1-9 without repetition.
+        """
+        board_dict = {"1": [], "2": [], "3": [], "4": [], "5": [], "6": [], "7": [], "8": [], "9": []}
+
+        for i in range(len(board)):
+            for j in range(len(board[i])):
+                value = board[i][j]
+                if value != ".":
+                    if i in (0, 1, 2):
+                        if j in (0, 1, 2):
+                            grid = 1
+                        elif j in (3, 4, 5):
+                            grid = 2
+                        else:
+                            grid = 3
+                    elif i in (3, 4, 5):
+                        if j in (0, 1, 2):
+                            grid = 4
+                        elif j in (3, 4, 5):
+                            grid = 5
+                        else:
+                            grid = 6
+                    else:
+                        if j in (0, 1, 2):
+                            grid = 7
+                        elif j in (3, 4, 5):
+                            grid = 8
+                        else:
+                            grid = 9
+                    if any(entry[0] == i or entry[1] == j or entry[2] == grid for entry in board_dict.get(value, [])):
+                        return False
+                    board_dict.setdefault(value, []).append((i, j, grid))
+
+        return True
 
 solution = Solution()
-nums = [1,2,3,4]
-result = solution.productExceptSelf(nums)
+board = [["8","3",".",".","7",".",".",".","."]
+,["6",".",".","1","9","5",".",".","."]
+,[".","9","8",".",".",".",".","6","."]
+,["8",".",".",".","6",".",".",".","3"]
+,["4",".",".","8",".","3",".",".","1"]
+,["7",".",".",".","2",".",".",".","6"]
+,[".","6",".",".",".",".","2","8","."]
+,[".",".",".","4","1","9",".",".","5"]
+,[".",".",".",".","8",".",".","7","9"]]
+result = solution.isValidSudoku(board)
 print(result)
