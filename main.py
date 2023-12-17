@@ -138,15 +138,29 @@ class Solution:
 
         return True
 
+    def longestConsecutive(self, nums: list[int]) -> int:
+        """Given an unsorted array of integers nums, return the length of the longest consecutive elements sequence.
+        You must write an algorithm that runs in O(n) time."""
+        if len(nums) < 1:
+            return 0
+
+        answer = 1
+        count = 1
+        sorted_nums = sorted(nums)
+
+        for i in range(0, len(sorted_nums) - 1):
+            if sorted_nums[i] == sorted_nums[i + 1] - 1:
+                count += 1
+                if count > answer:
+                    answer = count
+            elif sorted_nums[i] == sorted_nums[i + 1]:
+                continue
+            else:
+                count = 1
+
+        return answer
+
 solution = Solution()
-board = [["8","3",".",".","7",".",".",".","."]
-,["6",".",".","1","9","5",".",".","."]
-,[".","9","8",".",".",".",".","6","."]
-,["8",".",".",".","6",".",".",".","3"]
-,["4",".",".","8",".","3",".",".","1"]
-,["7",".",".",".","2",".",".",".","6"]
-,[".","6",".",".",".",".","2","8","."]
-,[".",".",".","4","1","9",".",".","5"]
-,[".",".",".",".","8",".",".","7","9"]]
-result = solution.isValidSudoku(board)
+nums = [0,3,7,2,5,8,4,6,0,1]
+result = solution.longestConsecutive(nums)
 print(result)
