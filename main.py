@@ -160,7 +160,29 @@ class Solution:
 
         return answer
 
+    def encode(self, strs):
+        """Design an algorithm to encode a list of strings to a string.
+        The encoded string is then sent over the network and is decoded back to the original list of strings."""
+        answer = ""
+        for val in range(0, len(strs)):
+            answer += strs[val] + " "
+        return solution.decode(answer)
+
+    def decode(self, strs):
+        answer = []
+        temp = ""
+
+        for char in strs:
+            if char != " ":
+                temp += char
+            if char == " ":
+                answer.append(temp)
+                temp = ""
+
+        return answer
+
+
 solution = Solution()
-nums = [0,3,7,2,5,8,4,6,0,1]
-result = solution.longestConsecutive(nums)
+test_input = ["we", "say", ":", "yes"]
+result = solution.encode(test_input)
 print(result)
