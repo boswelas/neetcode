@@ -210,8 +210,37 @@ class Solution:
 
         return True
 
+    def twoSum_2(self, numbers: list[int], target: int) -> list[int]:
+        """Given a 1-indexed array of integers numbers that is already sorted in non-decreasing order, find two numbers
+        such that they add up to a specific target number. Let these two numbers be numbers[index1] and numbers[index2]
+        where 1 <= index1 < index2 <= numbers.length.
+        Return the indices of the two numbers, index1 and index2, added by one as an integer array [index1, index2] of
+        length 2.
+        The tests are generated such that there is exactly one solution. You may not use the same element twice.
+        Your solution must use only constant extra space."""
+        index1 = 0
+        index2 = 1
+
+        while index1 <= len(numbers) - 1:
+            if numbers[index1] + numbers[index2] == target:
+                return [index1 + 1, index2 + 1]
+            elif numbers[index1] == numbers[index2]:
+                index1 += 1
+                index2 = index1 + 1
+            elif numbers[index1] + numbers[index2] > target:
+                index1 += 1
+                index2 = index1 + 1
+            elif index2 == len(numbers) - 1:
+                index1 += 1
+                index2 = index1 + 1
+            else:
+                index2 += 1
+
+        return []
+
 
 solution = Solution()
-s = "race a car"
-result = solution.isPalindrome(s)
+numbers = [5,25,75]
+target = 100
+result = solution.twoSum_2(numbers, target)
 print(result)
