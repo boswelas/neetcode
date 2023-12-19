@@ -181,8 +181,37 @@ class Solution:
 
         return answer
 
+    def isPalindrome(self, s: str) -> bool:
+        """A phrase is a palindrome if, after converting all uppercase letters into lowercase letters and removing all
+        non-alphanumeric characters, it reads the same forward and backward. Alphanumeric characters include letters
+        and numbers. Given a string s, return true if it is a palindrome, or false otherwise."""
+
+        palin_string = ""
+
+        for char in s:
+            if char.isalnum():
+                palin_string += char.lower()
+
+        length = len(palin_string)
+        if length / 2 != 0:
+            length -= 1
+
+        count = 0
+        front = 0
+        back = length
+
+        while count < length:
+            if palin_string[front] != palin_string[back]:
+                return False
+            else:
+                count += 2
+                front += 1
+                back -= 1
+
+        return True
+
 
 solution = Solution()
-test_input = ["we", "say", ":", "yes"]
-result = solution.encode(test_input)
+s = "race a car"
+result = solution.isPalindrome(s)
 print(result)
