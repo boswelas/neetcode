@@ -292,7 +292,64 @@ class Solution:
 
         return max_area
 
+    def trap(self, height: list[int]) -> int:
+        """Given n non-negative integers representing an elevation map where the width of each bar is 1,
+        compute how much water it can trap after raining."""
+
+        if len(height) < 3:
+            return 0
+
+        answer = 0
+        max_value = max(height)
+        max_index = height.index(max_value)
+
+        left_array = height[:max_index + 1]
+        print("left original is ", left_array)
+        right_array = height[max_index:]
+        print("right original is ", right_array)
+
+        if len(left_array) > 2:
+            left_max = len(left_array) - 1
+            left_new_max = 0
+            while left_max > 1:
+                for i in range(0, left_max):
+                    if left_array[i] > left_array[left_new_max]:
+                        left_new_max = i
+                left_val = left_array[left_new_max] * (left_max - left_new_max - 1)
+                l_minus_amount = 0
+                for i in range(left_new_max + 1, left_max):
+                    l_minus_amount += left_array[i]
+                left_val -= l_minus_amount
+                print("left val is ", left_val)
+                if left_val > 0:
+                    answer += left_val
+                left_max = left_new_max
+                left_new_max = 0
+                print("left max is ", left_max)
+
+        if len(right_array) > 2:
+            right_max = 0
+            right_new_max = 1
+            while right_max < len(right_array) - 2:
+                for i in range(len(right_array) - 1, right_max, -1):
+                    if right_array[i] >= right_array[right_new_max]:
+                        right_new_max = i
+                right_val = right_array[right_new_max] * (right_new_max - right_max - 1)
+                r_minus_amount = 0
+                for i in range(right_max + 1, right_new_max):
+                    r_minus_amount += right_array[i]
+                right_val -= r_minus_amount
+                print("right val is ", right_val)
+                if right_val > 0:
+                    answer += right_val
+                right_max = right_new_max
+                right_new_max = right_max + 1
+                print("right max is ", right_max)
+
+        return answer
+
+
 solution = Solution()
-height = [2, 0]
-result = solution.maxArea(height)
+height = [2,0,2]
+result = solution.trap(height)
 print(result)
