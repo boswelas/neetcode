@@ -3,7 +3,6 @@
 
 from collections import Counter
 
-
 class Solution:
     def containsDuplicate(self, nums: list[int]) -> bool:
         """Given an integer array nums, return true if any value appears at least twice in the array, and return false
@@ -413,8 +412,67 @@ class Solution:
         def getMin(self) -> int:
             return self.min[-1]
 
+    def evalRPN(self, tokens: list[str]) -> int:
+        """You are given an array of strings tokens that represents an arithmetic expression in a Reverse Polish
+        Notation.
+        Evaluate the expression. Return an integer that represents the value of the expression.
+        Note that:
+        The valid operators are '+', '-', '*', and '/'.
+        Each operand may be an integer or another expression.
+        The division between two integers always truncates toward zero.
+        There will not be any division by zero.
+        The input represents a valid arithmetic expression in a reverse polish notation.
+        The answer and all the intermediate calculations can be represented in a 32-bit integer.
+        """
+        nums = []
+
+        for char in tokens:
+            if char.isdigit():
+                nums.append(int(char))
+            elif char == "+":
+                val1 = nums.pop()
+                val2 = nums.pop()
+                nums.append(val2 + val1)
+            elif char == "-":
+                val1 = nums.pop()
+                val2 = nums.pop()
+                nums.append(val2 - val1)
+            elif char == "*":
+                val1 = nums.pop()
+                val2 = nums.pop()
+                nums.append(val2 * val1)
+            elif char == "/":
+                val1 = nums.pop()
+                val2 = nums.pop()
+                nums.append(val2 // val1)
+
+        return nums[0]
+
+    def generateParenthesis(self, n: int) -> list[str]:
+        """Given n pairs of parentheses, write a function to generate all combinations of well-formed parentheses."""
+        answer = []
+        stack = []
+
+        def backtrack(openN, closedN):
+            if openN == closedN == n:
+                answer.append("". join(stack))
+                return
+
+            if openN < n:
+                stack.append("(")
+                backtrack(openN + 1, closedN)
+                stack.pop()
+
+            if closedN < openN:
+                stack.append(")")
+                backtrack(openN, closedN + 1)
+                stack.pop()
+
+        backtrack(0,0)
+        return answer
+
 
 solution = Solution()
-s = "]"
-result = solution.isValid(s)
+n = 2
+result = solution.generateParenthesis(n)
 print(result)
