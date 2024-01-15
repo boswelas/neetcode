@@ -514,11 +514,28 @@ class Solution:
 
         return len(stack)
 
+    def largestRectangleArea(self, heights: list[int]) -> int:
+        """Given an array of integers heights representing the histogram's bar height where the width of each bar is 1,
+        return the area of the largest rectangle in the histogram."""
+        max_area = 0
+        stack = []
+
+        for i, h in enumerate(heights):
+            start = i
+            while stack and stack[-1][1] > h:
+                index, height = stack.pop()
+                max_area = max(max_area, height * (i - index))
+                start = index
+            stack.append((start, h))
+
+        for i, h in stack:
+            max_area = max(max_area, h * (len(heights) - i))
+
+        return max_area
+
 
 solution = Solution()
-target = 12
-position = [10,8,0,5,3]
-speed = [2,4,1,1,3]
-result = solution.carFleet(target, position, speed)
+heights = [2, 4]
+result = solution.largestRectangleArea(heights)
 print(result)
-print("expected: 3")
+print("expected: 4")
