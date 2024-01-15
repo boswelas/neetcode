@@ -489,8 +489,36 @@ class Solution:
 
         return output
 
+    def carFleet(self, target: int, position: list[int], speed: list[int]) -> int:
+        """There are n cars going to the same destination along a one-lane road. The destination is target miles away.
+        You are given two integer array position and speed, both of length n, where position[i] is the position of the
+        ith car and speed[i] is the speed of the ith car (in miles per hour).
+        A car can never pass another car ahead of it, but it can catch up to it and drive bumper to bumper at the same
+        speed. The faster car will slow down to match the slower car's speed. The distance between these two cars is
+        ignored (i.e., they are assumed to have the same position).
+        A car fleet is some non-empty set of cars driving at the same position and same speed.
+        Note that a single car is also a car fleet.
+        If a car catches up to a car fleet right at the destination point, it will still be considered as one car fleet.
+        Return the number of car fleets that will arrive at the destination."""
+        stack = []
+
+        combined = list(zip(position, speed))
+        sorted_array = sorted(combined, key=lambda x: x[0])
+        cars = [[pos, spd, (target - pos) / spd] for pos, spd in sorted_array]
+
+        stack.append(cars[-1])
+
+        for i in range(len(cars) - 2, -1, -1):
+            if cars[i][2] > stack[-1][2]:
+                stack.append(cars[i])
+
+        return len(stack)
+
 
 solution = Solution()
-temperatures = [30,60,90]
-result = solution.dailyTemperatures(temperatures)
+target = 12
+position = [10,8,0,5,3]
+speed = [2,4,1,1,3]
+result = solution.carFleet(target, position, speed)
 print(result)
+print("expected: 3")
