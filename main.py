@@ -471,8 +471,26 @@ class Solution:
         backtrack(0,0)
         return answer
 
+    def dailyTemperatures(self, temperatures: list[int]) -> list[int]:
+        """Given an array of integers temperatures represents the daily temperatures, return an array answer such that
+        answer[i] is the number of days you have to wait after the ith day to get a warmer temperature. If there is no
+        future day for which this is possible, keep answer[i] == 0 instead."""
+        output = [0] * len(temperatures)
+        stack = [[temperatures[0], 0]]
+
+        for i in range(1, len(temperatures)):
+            if temperatures[i] > stack[-1][0]:
+                while len(stack) != 0 and temperatures[i] > stack[-1][0]:
+                    output[stack[-1][1]] = (i - stack[-1][1])
+                    stack.pop()
+                stack.append([temperatures[i], i])
+            else:
+                stack.append([temperatures[i], i])
+
+        return output
+
 
 solution = Solution()
-n = 2
-result = solution.generateParenthesis(n)
+temperatures = [30,60,90]
+result = solution.dailyTemperatures(temperatures)
 print(result)
