@@ -589,9 +589,40 @@ class Solution:
                 return True
         return False
 
+    def minEatingSpeed(self, piles: List[int], h: int) -> int:
+        """Koko loves to eat bananas. There are n piles of bananas, the ith pile has piles[i] bananas. The guards have
+        gone and will come back in h hours.
+        Koko can decide her bananas-per-hour eating speed of k. Each hour, she chooses some pile of bananas and eats k
+        bananas from that pile. If the pile has less than k bananas, she eats all of them instead and will not eat any
+        more bananas during this hour.
+        Koko likes to eat slowly but still wants to finish eating all the bananas before the guards return.
+        Return the minimum integer k such that she can eat all the bananas within h hours."""
+        low = 1
+        high = max(piles)
+
+        if h == len(piles):
+            return high
+
+        while low <= high:
+            mid = (high + low) // 2
+            k = 0  # how many hours to eat
+
+            for bananas in piles:
+                k += (bananas + mid - 1) // mid
+            if k <= h:
+                high = mid - 1
+            else:
+                low = mid + 1
+
+        return low
+
+
+
+
+
 solution = Solution()
-matrix = [[1],[3]]
-target = 2
-result = solution.searchMatrix(matrix, target)
+piles = [3,6,7,11]
+h = 8
+result = solution.minEatingSpeed(piles, h)
 print(result)
 print("expected: 4")
