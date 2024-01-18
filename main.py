@@ -1,6 +1,7 @@
 # 'NeetCode Roadmap'
 # 'Dec 11, 2023'
 
+from typing import List
 from collections import Counter
 
 class Solution:
@@ -551,10 +552,46 @@ class Solution:
 
         return -1
 
+    def searchMatrix(self, matrix: list[list[int]], target: int) -> bool:
+        """You are given an m x n integer matrix matrix with the following two properties:
+        Each row is sorted in non-decreasing order.
+        The first integer of each row is greater than the last integer of the previous row.
+        Given an integer target, return true if target is in matrix or false otherwise.
+        You must write a solution in O(log(m * n)) time complexity."""
+        rows = len(matrix)
+        columns = len(matrix[0])
+        top = 0
+        bottom = rows - 1
+
+        while top <= bottom:
+            row = (top + bottom) // 2
+            if target > matrix[row][-1]:
+                top = row + 1
+            elif target < matrix[row][0]:
+                bottom = row - 1
+            else:
+                break
+
+        if not (top <= bottom):
+            return False
+
+        row = (top + bottom) // 2
+        l = 0
+        r = columns - 1
+
+        while l <= r:
+            mid = (l + r) // 2
+            if target > matrix[row][mid]:
+                l = mid + 1
+            elif target < matrix[row][mid]:
+                r = mid - 1
+            else:
+                return True
+        return False
 
 solution = Solution()
-nums = [-1,0,3,5,9,12]
-target = 5
-result = solution.search(nums, target)
+matrix = [[1],[3]]
+target = 2
+result = solution.searchMatrix(matrix, target)
 print(result)
 print("expected: 4")
