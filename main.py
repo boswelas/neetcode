@@ -4,6 +4,7 @@
 from typing import List
 from collections import Counter
 
+
 class Solution:
     def containsDuplicate(self, nums: list[int]) -> bool:
         """Given an integer array nums, return true if any value appears at least twice in the array, and return false
@@ -89,7 +90,7 @@ class Solution:
             prefix.append(prefix_sol)
             prefix_sol *= nums[i]
 
-        for i in range(length-1, -1, -1):
+        for i in range(length - 1, -1, -1):
             suffix.append(suffix_sol)
             suffix_sol *= nums[i]
 
@@ -456,7 +457,7 @@ class Solution:
 
         def backtrack(openN, closedN):
             if openN == closedN == n:
-                answer.append("". join(stack))
+                answer.append("".join(stack))
                 return
 
             if openN < n:
@@ -469,7 +470,7 @@ class Solution:
                 backtrack(openN, closedN + 1)
                 stack.pop()
 
-        backtrack(0,0)
+        backtrack(0, 0)
         return answer
 
     def dailyTemperatures(self, temperatures: list[int]) -> list[int]:
@@ -668,9 +669,43 @@ class Solution:
 
         return -1
 
+    class TimeMap:
+        """Design a time-based key-value data structure that can store multiple values for the same key at different
+        time stamps and retrieve the key's value at a certain timestamp."""
+
+        def __init__(self):
+            """Initializes the object of the data structure."""
+            self.store = {}  # key : list of [value, timestamp]
+
+        def set(self, key: str, value: str, timestamp: int) -> None:
+            """Stores the key key with the value value at the given time timestamp."""
+            if key not in self.store:
+                self.store[key] = []
+            self.store[key].append([value, timestamp])
+
+        def get(self, key: str, timestamp: int) -> str:
+            """Returns a value such that set was called previously, with timestamp_prev <= timestamp. If there are
+            multiple such values, it returns the value associated with the largest timestamp_prev. If there are no
+            values, it returns ""."""
+            res = ""
+            values = self.store.get(key, [])
+            left = 0
+            right = len(values) - 1
+
+            while left <= right:
+                middle = (left + right) // 2
+                if values[middle][1] <= timestamp:
+                    res = values[middle][0]
+                    left = middle + 1
+                else:
+                    right = middle - 1
+
+            return res
+
+
 
 solution = Solution()
-nums = [4,5,6,7,0,1,2]
+nums = [4, 5, 6, 7, 0, 1, 2]
 target = 6
 result = solution.search2(nums, target)
 print(result)
