@@ -768,9 +768,28 @@ class Solution:
 
         return max_substring
 
+    def characterReplacement(self, s: str, k: int) -> int:
+        """You are given a string s and an integer k. You can choose any character of the string and change it to any
+        other uppercase English character. You can perform this operation at most k times.
+        Return the length of the longest substring containing the same letter you can get after performing the above
+        operations."""
+        max_length = 0
+        left = 0
+        count = {}
+
+        for right in range(len(s)):
+            count[s[right]] = 1 + count.get(s[right], 0)
+            while(right - left + 1) - max(count.values()) > k:
+                count[s[left]] -= 1
+                left += 1
+            max_length = max(max_length, right - left + 1)
+
+        return max_length
+
 
 solution = Solution()
-s = "abcabcbb"
-result = solution.lengthOfLongestSubstring(s)
+s = "ABAB"
+k = 2
+result = solution.characterReplacement(s, k)
 print(result)
 print("expected: 4")
