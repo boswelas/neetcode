@@ -753,9 +753,24 @@ class Solution:
 
         return maxProfit
 
+    def lengthOfLongestSubstring(self, s: str) -> int:
+        """Given a string s, find the length of the longest substring without repeating characters."""
+        char_set = set()
+        left = 0
+        max_substring = 0
+
+        for right in range(len(s)):
+            while s[right] in char_set:
+                char_set.remove(s[left])
+                left += 1
+            char_set.add(s[right])
+            max_substring = max(max_substring, right - left + 1)
+
+        return max_substring
+
 
 solution = Solution()
-prices = [7,1,5,3,6,4]
-result = solution.maxProfit(prices)
+s = "abcabcbb"
+result = solution.lengthOfLongestSubstring(s)
 print(result)
 print("expected: 4")
