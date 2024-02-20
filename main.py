@@ -786,10 +786,42 @@ class Solution:
 
         return max_length
 
+    def checkInclusion(self, s1: str, s2: str) -> bool:
+        """Given two strings s1 and s2, return true if s2 contains a permutation of s1, or false otherwise.
+        In other words, return true if one of s1's permutations is the substring of s2."""
+        alphabet = "abcdefghijklmnopqrstuvwxyz"
+        s1_hashmap = {}
+        s2_hashmap = {}
+        left = 0
+        right = len(s1) - 1
+
+        if len(s1) > len(s2):
+            return False
+
+        for char in alphabet:
+            s1_hashmap[char] = 0
+        for char in range(len(s1)):
+            s1_hashmap[s1[char]] = 1 + s1_hashmap.get(s1[char], 0)
+
+        for char in alphabet:
+            s2_hashmap[char] = 0
+        for char in range(len(s1)):
+            s2_hashmap[s2[char]] = 1 + s2_hashmap.get(s2[char], 0)
+            if s1_hashmap == s2_hashmap:
+                return True
+
+        while right < len(s2) - 1:
+            right += 1
+            s2_hashmap[s2[right]] = 1 + s2_hashmap.get(s2[right], 0)
+            s2_hashmap[s2[left]] -= 1
+            left += 1
+            if s1_hashmap == s2_hashmap:
+                return True
+        return False
 
 solution = Solution()
-s = "ABAB"
-k = 2
-result = solution.characterReplacement(s, k)
+s1 = "ab"
+s2 = "eidbaooo"
+result = solution.checkInclusion(s1, s2)
 print(result)
-print("expected: 4")
+print("expected: true")
