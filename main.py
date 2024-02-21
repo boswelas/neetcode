@@ -1,6 +1,6 @@
 # 'NeetCode Roadmap'
 # 'Dec 11, 2023'
-
+import collections
 from typing import List
 from collections import Counter
 
@@ -855,9 +855,32 @@ class Solution:
         l, r = res
         return s[l:r+1] if resLen != float("infinity") else ""
 
+    def maxSlidingWindow(self, nums: List[int], k: int) -> List[int]:
+        """You are given an array of integers nums, there is a sliding window of size k which is moving from the very
+        left of the array to the very right. You can only see the k numbers in the window. Each time the sliding window
+        moves right by one position. Return the max sliding window."""
+        max_values = []
+        count = collections.deque()
+        l, r = 0, 0
+
+        while r < len(nums):
+            while count and nums[count[-1]] < nums[r]:
+                count.pop()
+            count.append(r)
+
+            if l > count[0]:
+                count.popleft()
+
+            if (r+1) >= k:
+                max_values.append(nums[count[0]])
+                l += 1
+            r += 1
+
+        return max_values
+
 solution = Solution()
-s = "ADOBECODEBANC"
-t = "ABC"
-result = solution.minWindow(s, t)
+nums = [1,3,-1,-3,5,3,6,7]
+k = 3
+result = solution.maxSlidingWindow(nums, k)
 print(result)
 print("expected: true")
