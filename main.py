@@ -3,6 +3,13 @@
 import collections
 from typing import List
 from collections import Counter
+from typing import Optional
+
+
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
 
 
 class Solution:
@@ -878,9 +885,19 @@ class Solution:
 
         return max_values
 
+    def reverseList(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        """Given the head of a singly linked list, reverse the list, and return the reversed list."""
+        prev = None
+        curr = head
+
+        while curr:
+            next_n = curr.next
+            curr.next = prev
+            prev = curr
+            curr = next_n
+        return prev
+
 solution = Solution()
-nums = [1,3,-1,-3,5,3,6,7]
-k = 3
-result = solution.maxSlidingWindow(nums, k)
+result = solution.reverseList()
 print(result)
 print("expected: true")
