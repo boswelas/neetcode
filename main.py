@@ -1005,6 +1005,7 @@ class Solution:
 
         return oldToCopy[head]
 
+
     def addTwoNumbers(self, l1: Optional[ListNode], l2: Optional[ListNode]) -> Optional[ListNode]:
         """You are given two non-empty linked lists representing two non-negative integers. The digits are stored in
         reverse order, and each of their nodes contains a single digit. Add the two numbers and return the sum as a
@@ -1029,6 +1030,25 @@ class Solution:
 
         return dummy.next
 
+
+    def hasCycle(self, head: Optional[ListNode]) -> bool:
+        """Given head, the head of a linked list, determine if the linked list has a cycle in it.
+        There is a cycle in a linked list if there is some node in the list that can be reached again by continuously
+        following the next pointer. Internally, pos is used to denote the index of the node that tail's next pointer is
+        connected to. Note that pos is not passed as a parameter.
+        Return true if there is a cycle in the linked list. Otherwise, return false."""
+
+        visited = {}
+
+        cur = head
+        while cur:
+            if cur in visited:
+                return True
+            else:
+                visited[cur] = True
+                cur = cur.next
+
+        return False
 
 
 
