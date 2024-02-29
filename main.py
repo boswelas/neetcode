@@ -1050,11 +1050,24 @@ class Solution:
 
         return False
 
+    def findDuplicate(self, nums: List[int]) -> int:
+        """Given an array of integers nums containing n + 1 integers where each integer is in the range [1, n]
+        inclusive.
+        There is only one repeated number in nums, return this repeated number.
+        You must solve the problem without modifying the array nums and uses only constant extra space."""
+        visited = {}
+
+        for i in nums:
+            if i in visited:
+                return i
+            else:
+                visited[i] = True
+        return -1
+
 
 
 solution = Solution()
-l1 = ListNode(2, ListNode(4, ListNode(3)))
-l2 = ListNode(5, ListNode(6, ListNode(4)))
-result = solution.addTwoNumbers(l1, l2)
+nums = [3,1,3,4,2]
+result = solution.findDuplicate(nums)
 print(result)
 print("expected: true")
