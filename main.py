@@ -19,6 +19,12 @@ class Node:
         self.random = random
 
 
+class LRUNode:
+    def __init__(self, key, val):
+        self.key, self.val = key, val
+        self.prev = self.next = None
+
+
 class Solution:
     def containsDuplicate(self, nums: list[int]) -> bool:
         """Given an integer array nums, return true if any value appears at least twice in the array, and return false
@@ -1075,6 +1081,60 @@ class Solution:
         #     slow2 = nums[slow2]
         #     if slow == slow2:
         #         return slow
+
+    class LRUCache:
+        """The functions get and put must each run in O(1) average time complexity."""
+
+        def __init__(self, capacity: int):
+            """Initialize the LRU cache with positive size capacity"""
+            self.cap = capacity
+            self.cache = {}
+
+            self.left, self.right = LRUNode(0,0), LRUNode(0,0)
+            self.left.next, self.right.prev = self.right, self.left
+
+
+        def get(self, key: int) -> int:
+            """Return the value of the key if the key exists, otherwise return -1"""
+            if key in self.cache:
+                self.remove(self.cache[key])
+                self.insert(self.cache[key])
+                return self.cache[key].val
+            return -1
+
+        def remove(self, node):
+            prev = node.prev
+            nxt = node.next
+
+            prev.next = nxt
+            nxt.prev = prev
+
+        def insert(self, node):
+            prev = self.right.prev
+            nxt = self.right
+
+            prev.next = nxt.prev = node
+            node.next = nxt
+            node.prev = prev
+
+        def put(self, key: int, value: int) -> None:
+            if key in self.cache:
+                self.remove(self.cache[key])
+            self.cache[key] = LRUNode(key, value)
+            self.insert(self.cache[key])
+
+            if len(self.cache) > self.cap:
+                lru = self.left.next
+                self.remove(lru)
+                del self.cache[lru.key]
+
+            """Update the value of the key if the key exists. Otherwise, add the key-value pair to the cache. If the
+            number of keys exceeds the capacity from this operation, evict the least recently used key"""
+
+    # Your LRUCache object will be instantiated and called as such:
+    # obj = LRUCache(capacity)
+    # param_1 = obj.get(key)
+    # obj.put(key,value)
 
         
 
