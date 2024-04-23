@@ -14,8 +14,24 @@ class Solution:
                 return True
         return False
 
+
+    def isAnagram(self, s: str, t: str) -> bool:
+        """Given two strings s and t, return true if t is an anagram of s, and false otherwise.
+        An Anagram is a word or phrase formed by rearranging the letters of a different word or phrase, typically using
+        all the original letters exactly once."""
+
+        if len(s) != len(t):
+            return False
+
+        sorted_s = sorted(s)
+        sorted_t = sorted(t)
+
+        return sorted_s == sorted_t
+
+
 solution = Solution()
-nums = [1,1,1,3,3,4,3,2,4,2]
-result = solution.containsDuplicate(nums)
+s = "rat"
+t = "car"
+result = solution.isAnagram(s, t)
 print(result)
 
