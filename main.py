@@ -28,10 +28,25 @@ class Solution:
 
         return sorted_s == sorted_t
 
+    def twoSum(self, nums: List[int], target: int) -> List[int]:
+        """Given an array of integers nums and an integer target, return indices of the two numbers such that they add
+        up to target.
+        You may assume that each input would have exactly one solution, and you may not use the same element twice.
+        You can return the answer in any order."""
+
+        for i in range(len(nums) - 1):
+            needed = target - nums[i]
+            if needed in nums[i + 1:]:
+                return [i, nums[i + 1:].index(needed) + i + 1]
+
+
+
+
+
 
 solution = Solution()
-s = "rat"
-t = "car"
-result = solution.isAnagram(s, t)
+nums = [0,4,3,0]
+target = 0
+result = solution.twoSum(nums, target)
 print(result)
 
