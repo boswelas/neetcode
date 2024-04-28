@@ -71,13 +71,40 @@ class Solution:
 
         for i in range(0, k):
             result.append(sorted_nums_dict[i])
-
         return result
+
+    def encode(self, strs: List[str]) -> str:
+        """Design an algorithm to encode a list of strings to a single string."""
+        result = ""
+        for item in strs:
+            count = str(len(item)) + "#"
+            result = result + count + item
+        return result
+
+    def decode(self, s: str) -> List[str]:
+        """The encoded string is then decoded back to the original list of strings."""
+        decoded = []
+        count = 0
+        length = ""
+        i = 0
+
+        while i < len(s):
+            if s[i] != "#":
+                length = length + s[i]
+                i += 1
+            else:
+                i += 1
+                count += int(length)
+                word = s[i:i + count]
+                decoded.append(word)
+                i += count
+                count = 0
+                length = ""
+        return decoded
 
 
 solution = Solution()
-nums = [1,1,1,2,2,3, 3, 3, 3, 3]
-k = 2
-result = solution.topKFrequent(nums, k)
+strs = ["neet","code","love","you"]
+result = solution.decode(solution.encode(strs))
 print(result)
 
