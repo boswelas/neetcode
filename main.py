@@ -1,4 +1,4 @@
-from collections import defaultdict
+from collections import defaultdict, OrderedDict
 from typing import List
 
 
@@ -52,18 +52,32 @@ class Solution:
 
         return list(anagram_map.values())
 
+    def topKFrequent(self, nums: List[int], k: int) -> List[int]:
+        """Given an integer array nums and an integer k, return the k most frequent elements.
+        You may return the answer in any order."""
 
+        nums_dict = {}
+        result = []
 
+        for val in nums:
+            if val not in nums_dict:
+                nums_dict[val] = 1
+            else:
+                new_val = nums_dict.get(val)
+                new_val += 1
+                nums_dict[val] = new_val
 
+        sorted_nums_dict = sorted(nums_dict, key=nums_dict.get, reverse=True)
 
+        for i in range(0, k):
+            result.append(sorted_nums_dict[i])
 
-
-
-
+        return result
 
 
 solution = Solution()
-strs = ["eat","tea","tan","ate","nat","bat"]
-result = solution.groupAnagrams(strs)
+nums = [1,1,1,2,2,3, 3, 3, 3, 3]
+k = 2
+result = solution.topKFrequent(nums, k)
 print(result)
 
