@@ -1,4 +1,4 @@
-from collections import defaultdict, OrderedDict
+from collections import defaultdict
 from typing import List
 
 
@@ -102,9 +102,37 @@ class Solution:
                 length = ""
         return decoded
 
+    def productExceptSelf(self, nums: List[int]) -> List[int]:
+        """Given an integer array nums, return an array answer such that answer[i] is equal to the product of all the
+        elements of nums except nums[i].
+        The product of any prefix or suffix of nums is guaranteed to fit in a 32-bit integer.
+        You must write an algorithm that runs in O(n) time and without using the division operation."""
+        prefix = [nums[0]]
+        postfix = [nums[len(nums) - 1]]
+        output = []
+        k = 0
+
+        for i in range(1, len(nums)):
+            prefix.append(nums[i] * prefix[i-1])
+
+        for i in range(len(nums) - 2, 0, -1):
+            postfix.append(nums[i] * postfix[k])
+            k += 1
+        postfix.append(postfix[len(postfix) -1])
+        postfix.reverse()
+
+        for i in range(0, len(nums)):
+            if i - 1 < 0:
+                output.append(postfix[i + 1])
+            elif i + 1 == len(nums):
+                output.append(prefix[i - 1])
+            else:
+                output.append(prefix[i - 1] * postfix[i+1])
+
+        return output
 
 solution = Solution()
-strs = ["neet","code","love","you"]
-result = solution.decode(solution.encode(strs))
+nums = [0, 0]
+result = solution.productExceptSelf(nums)
 print(result)
 
