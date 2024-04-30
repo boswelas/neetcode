@@ -174,14 +174,37 @@ class Solution:
             if char.isdigit() or char.isalpha():
                 forward = forward + char.lower()
 
-
-
         if forward == forward[::-1]:
             return True
         return False
 
+    def twoSum(self, numbers: List[int], target: int) -> List[int]:
+        """Given a 1-indexed array of integers numbers that is already sorted in non-decreasing order, find two numbers
+        such that they add up to a specific target number. Let these two numbers be numbers[index1] and numbers[index2]
+        where 1 <= index1 < index2 <= numbers.length.
+        Return the indices of the two numbers, index1 and index2, added by one as an integer array [index1, index2]
+        of length 2.
+        The tests are generated such that there is exactly one solution. You may not use the same element twice.
+        Your solution must use only constant extra space."""
+        #l, r pointers
+        l = 0
+        r = len(numbers) - 1
+        mid = len(numbers) // 2
+
+        while l < r:
+            if numbers[l] + numbers[r] == target:
+                return [l+1, r+1]
+            elif numbers[l] + numbers[r] > target:
+                r -= 1
+            else:
+                l += 1
+
+
+
+
 solution = Solution()
-s = "race a car"
-result = solution.isPalindrome(s)
+numbers = [3,24,50,79,88,150,345]
+target = 200
+result = solution.twoSum(numbers, target)
 print(result)
 
