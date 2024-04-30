@@ -157,17 +157,31 @@ class Solution:
 
         return True
 
+    def longestConsecutive(self, nums: List[int]) -> int:
+        """Given an unsorted array of integers nums, return the length of the longest consecutive elements sequence.
+        You must write an algorithm that runs in O(n) time."""
+        output = 0
+
+        return output
+
+    def isPalindrome(self, s: str) -> bool:
+        """A phrase is a palindrome if, after converting all uppercase letters into lowercase letters and removing
+        all non-alphanumeric characters, it reads the same forward and backward. Alphanumeric characters include letters
+        and numbers.
+        Given a string s, return true if it is a palindrome, or false otherwise."""
+        forward = ""
+        for char in s:
+            if char.isdigit() or char.isalpha():
+                forward = forward + char.lower()
+
+
+
+        if forward == forward[::-1]:
+            return True
+        return False
 
 solution = Solution()
-board = [["5","3",".",".","7",".",".",".","."]
-,["6",".",".","1","9","5",".",".","."]
-,[".","9","8",".",".",".",".","6","."]
-,["8",".",".",".","6",".",".",".","3"]
-,["4",".",".","8",".","3",".",".","1"]
-,["7",".",".",".","2",".",".",".","6"]
-,[".","6",".",".",".",".","2","8","."]
-,[".",".",".","4","1","9",".",".","5"]
-,[".",".",".",".","8",".",".","7","9"]]
-result = solution.isValidSudoku(board)
+s = "race a car"
+result = solution.isPalindrome(s)
 print(result)
 
