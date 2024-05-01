@@ -228,9 +228,31 @@ class Solution:
                     k -= 1
         return output
 
+    def maxArea(self, height: List[int]) -> int:
+        """You are given an integer array height of length n. There are n vertical lines drawn such that the two
+        endpoints of the ith line are (i, 0) and (i, height[i]).
+        Find two lines that together with the x-axis form a container, such that the container contains the most water.
+        Return the maximum amount of water a container can store.
+        Notice that you may not slant the container."""
+        output = 0
+        l = 0
+        r = len(height) - 1
+
+        while l < r:
+            area = min(height[l], height[r]) * (r - l)
+            output = max(area, output)
+            if height[l] > height[r]:
+                r -= 1
+            else:
+                l += 1
+        return output
+
+
+
+
 
 solution = Solution()
-nums = [-1,0,1,2,-1,-4,-2,-3,3,0,4]
-result = solution.threeSum(nums)
+height = [1,8,6,2,5,4,8,3,7]
+result = solution.maxArea(height)
 print(result)
 
