@@ -247,12 +247,30 @@ class Solution:
                 l += 1
         return output
 
+    def trap(self, height: List[int]) -> int:
+        """Given n non-negative integers representing an elevation map where the width of each bar is 1, compute
+        how much water it can trap after raining."""
+        #find max
+        # find second max
+        # mul distance by sm
+        # sub numbers between
+        # add that to output
+        # set sm to max and find new max
+        output = 0
+        max_height = height.index(max(height))
 
+        r_array = height[max_height:]
+        l = 0
 
-
+        while l < len(height):
+            second_max = r_array.index(max(r_array[1:]))
+            area = r_array[second_max] * (r_array[l] - 1)
+            output += area
+            l = second_max
+        return output
 
 solution = Solution()
-height = [1,8,6,2,5,4,8,3,7]
-result = solution.maxArea(height)
+height = [0,1,0,2,1,0,1,3,2,1,2,1]
+result = solution.trap(height)
 print(result)
 
