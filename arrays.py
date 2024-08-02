@@ -123,7 +123,40 @@ class Solution:
             
         return result
     
+    def productExceptSelf(self, nums: List[int]) -> List[int]:
+        """Given an integer array nums, return an array output where output[i] is 
+        the product of all the elements of nums except nums[i].
+        Follow-up: Could you solve it in O(n) time without using the division operation?"""
+        forward = [nums[0]]
+        backward = [nums[-1]]
+        output = []
+        
+        for i in range(1, len(nums)):
+            forward.append(nums[i] * forward[i-1])
 
+        k = 0
+        for i in range(len(nums) - 2, 0, -1):
+            backward.append(nums[i] * backward[k])
+            k += 1
+        backward.append(1)
+        backward.reverse()
+
+        for i in range(0, len(nums)):
+            if i - 1 < 0:
+                output.append(backward[i + 1])
+            elif i + 1 == len(nums):
+                output.append(forward[i - 1])
+            else:
+                output.append(forward[i - 1] * backward[i+1])
+
+        return output
+        
+    
 solution = Solution()
-strs = ["we","say",":","yes","!@#$%^&*()"]
-print(solution.decode(solution.encode(strs)))
+# nums = [1,2,4,6]
+# output: [48, 24, 12, 8]
+nums = [-1,0,1,2,3]
+#f = [1, -1, 0, 0, 0, 0]
+#b = [1, 3, 6, 6, 0, 0]
+# Output: [0,-6,0,0,0]
+print(solution.productExceptSelf(nums))
