@@ -150,13 +150,43 @@ class Solution:
                 output.append(forward[i - 1] * backward[i+1])
 
         return output
+    
+    def isValidSudoku(self, board: List[List[str]]) -> bool:
+        """You are given a a 9 x 9 Sudoku board board. A Sudoku board is valid if 
+        the following rules are followed:
+        Each row must contain the digits 1-9 without duplicates.
+        Each column must contain the digits 1-9 without duplicates.
+        Each of the nine 3 x 3 sub-boxes of the grid must contain the digits 1-9 
+        without duplicates.
+        Return true if the Sudoku board is valid, otherwise return false"""
+        row, col, squares = {}, {}, {}
+        for i in range(9):
+            row[i] = set()
+            col[i] = set()
+            for j in range(9):
+                squares[i//3, j//3] = set()
+
+        for i in range(9):
+            for j in range(9):
+                if board[i][j].isdigit():
+                    num = board[i][j]
+                    if num in row[i] or num in col[j] or num in squares[i//3, j//3]:
+                        return False
+                    row[i].add(num)
+                    col[j].add(num)
+                    squares[i//3, j//3].add(num)
+ 
+        return True
         
     
 solution = Solution()
-# nums = [1,2,4,6]
-# output: [48, 24, 12, 8]
-nums = [-1,0,1,2,3]
-#f = [1, -1, 0, 0, 0, 0]
-#b = [1, 3, 6, 6, 0, 0]
-# Output: [0,-6,0,0,0]
-print(solution.productExceptSelf(nums))
+board = [["1","2",".",".","3",".",".",".","."],
+ ["4",".",".","5",".",".",".",".","."],
+ [".","9","1",".",".",".",".",".","3"],
+ ["5",".",".",".","6",".",".",".","4"],
+ [".",".",".","8",".","3",".",".","5"],
+ ["7",".",".",".","2",".",".",".","6"],
+ [".",".",".",".",".",".","2",".","."],
+ [".",".",".","4","1","9",".",".","8"],
+ [".",".",".",".","8",".",".","7","9"]]
+print(solution.isValidSudoku(board))
