@@ -93,10 +93,37 @@ class Solution:
             kfrequent.append(frequent)
             visited.pop(frequent)
             
-        return kfrequent          
-
+        return kfrequent
     
+    def encode(self, strs: List[str]) -> str:
+        """Design an algorithm to encode a list of strings to a single string. The 
+        encoded string is then decoded back to the original list of strings."""
+        strs_string = ""
+        for i in range(0, len(strs)):
+            strs_string += str(len(strs[i])) + "#" + strs[i]
+        return strs_string
+          
+    def decode(self, s: str) -> List[str]:
+        result = []
+        i = 0
+        
+        while i < len(s):
+            count = ""
+            while s[i].isdigit():
+                count += s[i]
+                i += 1
+            count = int(count)
+            i += 1
+            temp = ""
+            while count > 0:
+                temp += "".join(s[i])
+                count -= 1
+                i += 1
+            result.append(temp)
+            
+        return result
+    
+
 solution = Solution()
-nums = [1,1,1,2,2,3]
-k = 2
-print(solution.topKFrequent(nums, k))
+strs = ["we","say",":","yes","!@#$%^&*()"]
+print(solution.decode(solution.encode(strs)))
