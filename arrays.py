@@ -177,16 +177,34 @@ class Solution:
                     squares[i//3, j//3].add(num)
  
         return True
+    
+    def longestConsecutive(self, nums: List[int]) -> int:
+        """Given an array of integers nums, return the length of the longest consecutive 
+        sequence of elements.
+        A consecutive sequence is a sequence of elements in which each element is exactly 
+        1 greater than the previous element.
+        You must write an algorithm that runs in O(n) time."""
+        if len(nums) == 1:
+            return 1
+        
+        numSet = set(nums)
+        longest = 0
+        
+        for n in nums:
+            if (n - 1) not in numSet:
+                length = 0
+                while (n + length) in numSet:
+                    length += 1
+                longest = max(length, longest)
+                
+        return longest
+        
+        
+        
+        
+
         
     
 solution = Solution()
-board = [["1","2",".",".","3",".",".",".","."],
- ["4",".",".","5",".",".",".",".","."],
- [".","9","1",".",".",".",".",".","3"],
- ["5",".",".",".","6",".",".",".","4"],
- [".",".",".","8",".","3",".",".","5"],
- ["7",".",".",".","2",".",".",".","6"],
- [".",".",".",".",".",".","2",".","."],
- [".",".",".","4","1","9",".",".","8"],
- [".",".",".",".","8",".",".","7","9"]]
-print(solution.isValidSudoku(board))
+nums = [2,20,4,10,3,4,5]
+print(solution.longestConsecutive(nums))
