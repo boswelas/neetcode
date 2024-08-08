@@ -61,8 +61,59 @@ class Solution:
                     k -= 1
         
         return [list(s) for s in result]
+    
+    def maxArea(self, height: List[int]) -> int:
+        """You are given an integer array heights where heights[i] represents 
+        the height of the ith bar.
+        You may choose any two bars to form a container. Return the maximum 
+        amount of water a container can store."""
+        area = 0
+        l, r = 0, len(height) - 1
 
+        while l < r:
+            temp = min(height[l], height[r])
+            area = max(area, (temp * (r - l)))
+            if height[l] < height[r]:
+                l += 1
+            elif height[r] <= height[l]:
+                r -= 1
+            
+        return area
+    
+    def trap(self, height: List[int]) -> int:
+        """You are given an array non-negative integers heights which represent an 
+        elevation map. Each value heights[i] represents the height of a bar, which 
+        has a width of 1.
+        Return the maximum area of water that can be trapped between the bars."""
+        total = 0
+        max_height = height.index(max(height))
+
+        l_array = height[:max_height + 1]
+        r_array = height[max_height:]
+
+        
+        #get left side
+        while len(l_array) > 1:
+            l_max = len(l_array) - 1
+            l = l_array.index(max(l_array[:l_max]))
+            space = l_array[l] * (l_max - l - 1)
+            for i in range(l + 1, l_max):
+                space -= l_array[i]
+            total += space
+            l_array = l_array[:l + 1]
+            
+        #get right side
+        while len(r_array) > 1:
+            r = r_array[1:].index(max(r_array[1:])) + 1
+            space = r_array[r] * (r - 1)
+            for i in range(1, r):
+                space -= r_array[i]
+            total += space
+            r_array = r_array[r:]      
+                
+        return total
+        
     
 solution = Solution()
-nums = [0,0,0]
-print(solution.threeSum(nums))
+height = [0,2,0,3,1,0,1,3,2,1]
+print(solution.trap(height))
