@@ -2,6 +2,7 @@ from typing import List
 
 
 class Solution:
+    
     def is_palindrome(self, s):
         """Given a string s, return true if it is a palindrome, otherwise return false.
         A palindrome is a string that reads the same forward and backward. It is also 
@@ -85,13 +86,15 @@ class Solution:
         elevation map. Each value heights[i] represents the height of a bar, which 
         has a width of 1.
         Return the maximum area of water that can be trapped between the bars."""
+        
+        if not height or len(height) == 1:
+            return 0
+        
         total = 0
         max_height = height.index(max(height))
-
         l_array = height[:max_height + 1]
         r_array = height[max_height:]
 
-        
         #get left side
         while len(l_array) > 1:
             l_max = len(l_array) - 1
