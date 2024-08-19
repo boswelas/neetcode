@@ -71,9 +71,28 @@ class Solution:
                 l = mid + 1
         return result
 
+    def findMin(self, nums: List[int]) -> int:
+        """You are given an array of length n which was originally sorted in ascending order. 
+        It has now been rotated between 1 and n times. Assuming all elements in the rotated 
+        sorted array nums are unique, return the minimum element of this array.
+        A solution that runs in O(n) time is trivial, can you write an algorithm that runs in O(log n) time?"""
+        min_num = nums[0]
+        l, r = 0, len(nums) - 1
+        
+        while l <= r:
+            mid = (r + l) // 2
+            if nums[mid] < min_num:
+                min_num = nums[mid]
+            if nums[mid] > nums[r]:
+                l = mid + 1
+            else:
+                r = mid - 1
+                
+        return min_num
+        
+
         
         
 solution = Solution()
-piles = [3,6,7,11]
-h = 8
-print(solution.minEatingSpeed(piles, h))
+nums = [4,5,6,7]
+print(solution.findMin(nums))
