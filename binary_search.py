@@ -116,7 +116,44 @@ class Solution:
                     
         return -1
                     
+
+class TimeMap:
+    """Implement a time-based key-value data structure that supports:
+    Storing multiple values for the same key at specified time stamps.
+    Retrieving the key's value at a specified timestamp."""
+    
+    def __init__(self):
+        self.store = {}
+
+    def set(self, key: str, value: str, timestamp: int) -> None:
+        """void set(String key, String value, int timestamp) 
+        Stores the key key with the value value at the given time timestamp."""
         
+        if key not in self.store:
+            self.store[key] = []
+        self.store[key].appened([value, timestamp])
+        
+    def get(self, key: str, timestamp: int) -> str:
+        """String get(String key, int timestamp) Returns the most recent value of key 
+        if set was previously called on it and the most recent timestamp for that key 
+        prev_timestamp is less than or equal to the given timestamp (prev_timestamp <= timestamp). 
+        If there are no values, it returns "". """
+        result = ""
+        values = self.store.get(key, [])
+        l, r = 0, len(values) - 1
+        
+        while l <= r:
+            mid = (l + r) // 2
+            if values[mid][1] == timestamp:
+                return values[mid][0]
+            elif values[mid][1] < timestamp:
+                result = values[mid][0]
+                l = mid + 1      
+            else:
+                r = mid - 1
+                
+        return result
+
 solution = Solution()
 nums = [3,4,5,6,1,2] 
 target = 6
