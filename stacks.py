@@ -70,12 +70,71 @@ class Solution:
         The operands may be integers or the results of other operations.
         The operators include '+', '-', '*', and '/'.
         Assume that division between integers always truncates toward zero."""
-
+        stack = []
+        for c in tokens:
+            if c == "+":
+                stack.append(stack.pop() + stack.pop())
+            elif c == "-":
+                a, b = stack.pop(), stack.pop()
+                stack.append(b - a)
+            elif c == "*":
+                stack.append(stack.pop() * stack.pop())
+            elif c == "/":
+                a, b = stack.pop(), stack.pop()
+                stack.append(int(float(b) / a))
+            else:
+                stack.append(int(c))
+        return stack[0]
+    
+    def generateParenthesis(self, n: int) -> List[str]:
+        """You are given an integer n. Return all well-formed parentheses strings 
+        that you can generate with n pairs of parentheses. 1 <= n <= 7"""
+        stack = []
+        result = []
+        
+        def backtrack(openN, closedN):
+            if openN == closedN == n:
+                result.append("".join(stack))
+                return
+            
+            if openN < n:
+                stack.append("(")
+                backtrack(openN + 1, closedN)
+                stack.pop()
+                
+            if closedN < openN:
+                stack.append(")")
+                backtrack(openN, closedN + 1)
+                stack.pop()
+                    
+        backtrack(0, 0)
+        return result
+    
+    def dailyTemperatures(self, temperatures: List[int]) -> List[int]:
+        """You are given an array of integers temperatures where temperatures[i] 
+        represents the daily temperatures on the ith day.
+        Return an array result where result[i] is the number of days after the ith day 
+        before a warmer temperature appears on a future day. If there is no day in the 
+        future where a warmer temperature will appear for the ith day, set result[i] to 0 instead."""
+        days = []
+        
+        for i in range(0, len(temperatures)):
+            count = 0
+            for k in range(i+1, len(temperatures)):
+                count += 1
+                if temperatures[k] > temperatures[i]:
+                    days.append(count)
+                    break
+            if len(days) < i + 1:
+                days.append(0)
+            
+        return days
+                
     
     
 
 
 
 solution = Solution()
-s = "]]"
-print(solution.isValid(s))
+temperatures = [30,38,30,36,35,40,28]
+print(solution.dailyTemperatures(temperatures))
