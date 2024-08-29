@@ -10,7 +10,14 @@ class Solution:
         in the future to sell it.
         Return the maximum profit you can achieve. You may choose to not make any transactions, 
         in which case the profit would be 0."""
-        return 0
+        profit = 0
+        
+        lowest = prices[0]
+        for price in prices:
+            if price < lowest:
+                lowest = price
+            profit = max(profit, price - lowest)
+        return profit
     
     
 solution = Solution()
