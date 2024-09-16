@@ -19,7 +19,63 @@ class Solution:
             profit = max(profit, price - lowest)
         return profit
     
+    def lengthOfLongestSubstring(self, s: str) -> int:
+        """Given a string s, find the length of the longest substring without 
+        duplicate characters.
+        A substring is a contiguous sequence of characters within a string."""
+        queue = []
+        result = 0
+        
+        for char in s:
+            if char not in queue:
+                queue.append(char)
+            else:
+                while queue[0] != char:
+                    queue.pop(0)
+                queue.pop(0)
+                queue.append(char)   
+            result = max(result, len(queue))             
+        
+        return result
+    
+    
+    def characterReplacement(self, s: str, k: int) -> int:
+        """You are given a string s consisting of only uppercase english characters 
+        and an integer k. You can choose up to k characters of the string and replace 
+        them with any other uppercase English character.
+        After performing at most k replacements, return the length of the longest substring 
+        which contains only one distinct character."""
+        result = 0
+        characters = {}
+        l, r = 0, 0
+        total = 0
+        
+        while r < len(s):
+            if s[r] not in characters:
+                characters[s[r]] = 1
+            else:
+                characters[s[r]] += 1
+            total += 1
+            diff = total - max(characters.values())
+            if diff <= k:
+                result = max(result, total)
+                r += 1
+            else:
+                characters[s[l]] -= 1
+                total -= 1
+                l += 1
+                r += 1
+                
+        return result
+            
+        
+        
+        
+       
+
+    
     
 solution = Solution()
-prices = [10,1,5,6,7,1]
-print(solution.maxProfit(prices))
+s = "AAABABB" 
+k = 1
+print(solution.characterReplacement(s, k))
