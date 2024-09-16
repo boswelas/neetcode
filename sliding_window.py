@@ -67,6 +67,48 @@ class Solution:
                 r += 1
                 
         return result
+    
+    def checkInclusion(self, s1: str, s2: str) -> bool:
+        """You are given two strings s1 and s2.
+        Return true if s2 contains a permutation of s1, or false otherwise. That means if a permutation 
+        of s1 exists as a substring of s2, then return true.
+        Both strings only contain lowercase letters."""
+        if len(s1) > len(s2):
+            return False
+        
+        s1_dict = {}
+        s2_dict = {}
+        l, r = 0, len(s1) - 1
+       
+        for char in s1:
+            if char not in s1_dict:
+                s1_dict[char] = 1
+            else:
+                s1_dict[char] += 1
+                
+        for i in range(0, len(s1)):
+            if s2[i] not in s2_dict:
+                s2_dict[s2[i]] = 1
+            else:
+                s2_dict[s2[i]] += 1
+            if s1_dict == s2_dict:
+                return True
+            
+        while r < len(s2) - 1:
+            s2_dict[s2[l]] -= 1
+            if s2_dict[s2[l]] == 0:
+                del s2_dict[s2[l]]
+            l += 1
+            r += 1
+            
+            if s2[r] not in s2_dict:
+                    s2_dict[s2[r]] = 1
+            else:
+                s2_dict[s2[r]] += 1      
+            if s1_dict == s2_dict:
+                return True      
+            
+        return False
             
         
         
@@ -76,6 +118,6 @@ class Solution:
     
     
 solution = Solution()
-s = "AAABABB" 
-k = 1
-print(solution.characterReplacement(s, k))
+s1 = "adc" 
+s2 = "dcda"
+print(solution.checkInclusion(s1, s2))
