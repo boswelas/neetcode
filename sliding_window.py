@@ -109,15 +109,36 @@ class Solution:
                 return True      
             
         return False
-            
+    
+    
+    def minWindow(self, s: str, t: str) -> str:
+        """Given two strings s and t, return the shortest substring of s such that 
+        every character in t, including duplicates, is present in the substring. 
+        If such a substring does not exist, return an empty string "".
+        You may assume that the correct output is always unique."""
+        if len(t) > len(s):
+            return ""
         
+        t_sorted = "".join(sorted(t))
+        result = s
+        curr = ""
+        l, r = 0, 0
         
+        while r < len(s):
+            curr += s[r]
+            if t_sorted in "".join(sorted(curr)):
+                if len(curr) < len(result):
+                    result = curr
+                l += 1
+                curr = curr[1:]
+            else:
+                r += 1
         
-       
-
+        return result   
+        
     
     
 solution = Solution()
-s1 = "adc" 
-s2 = "dcda"
-print(solution.checkInclusion(s1, s2))
+s = "OUZODYXAZV"
+t = "XYZ"
+print(solution.minWindow(s, t))
