@@ -1,5 +1,9 @@
 from typing import Optional
 
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
 
 class Node:
     def __init__(self, data=None, next=None) -> None:
@@ -86,55 +90,62 @@ class LinkedList:
             
         return prev
     
-def mergeTwoLists(list1: Optional[Node], list2: Optional[Node]) -> Optional[Node]:
-    """You are given the heads of two sorted linked lists list1 and list2.
-    Merge the two lists into one sorted linked list and return the head of the new sorted linked list.
-    The new list should be made up of nodes from list1 and list2."""
-    # dummy = Node()
-    # tail = dummy
-    
-    # while list1 and list2:
-    #     if list1.data < list2.data:
-    #         tail.next = list1
-    #         list1 = list1.next
-    #     else:
-    #         tail.next = list2
-    #         list2 = list2.next
-    #     tail = tail.next
+class Solution:
+    def mergeTwoLists(self, list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[Node]:
+        """You are given the heads of two sorted linked lists list1 and list2.
+        Merge the two lists into one sorted linked list and return the head of the new sorted linked list.
+        The new list should be made up of nodes from list1 and list2."""
+        dummy = ListNode()
+        tail = dummy
         
-    # if list1:
-    #     tail.next = list1 
-    # elif list2:
-    #     tail.next = list2 
-    
-    # return dummy.next
-    list3 = LinkedList()
-    l1 = list1.head 
-    l2 = list2.head
-    
-    while l1 and l2:
-        if l1.data < l2.data:
-            list3.insert(l1)
-            l1 = l1.next 
-        else:
-            list3.insert(l2)
-            l2 = l2.next
-    if l1:
-        list3.insert(l1)
-    elif list2:
-        list3.insert(l2)
-    list3.print()
-    return list3
+        while list1 and list2:
+            if list1.val < list2.val:
+                tail.next = list1
+                list1 = list1.next
+            else:
+                tail.next = list2
+                list2 = list2.next
+            tail = tail.next
+            
+        if list1:
+            tail.next = list1 
+        elif list2:
+            tail.next = list2 
+        return dummy.next
+        
+    def reorderList(self, head: Optional[ListNode]) -> None:
+        """You are given the head of a singly linked-list. The positions of a linked list of length = 7 for example, can intially be represented as:
+        [0, 1, 2, 3, 4, 5, 6]
+        Reorder the nodes of the linked list to be in the following order: [0, 6, 1, 5, 2, 4, 3]
+        Notice that in the general case for a list of length = n the nodes are reordered to be in the following order: [0, n-1, 1, n-2, 2, n-3, ...]
+        You may not modify the values in the list's nodes, but instead you must reorder the nodes themselves."""
         
 
-ll = LinkedList()
-ll.insert_values([0,1,2,3])
-list1 = LinkedList()
-list1.insert_values([1, 2, 3])
-list2 = LinkedList() 
-list2.insert_values([1,2])
-list1.print()
-list2.print()
-mergeTwoLists(list1, list2)
+
+
+
+def print_linked_list(head):
+    current = head
+    while current:
+        print(current.val, end=" -> " if current.next else "")
+        current = current.next
+    print()       
+
+solution = Solution()
+values = [1, 2, 4]  
+list1 = ListNode(values[0])
+current = list1
+for val in values[1:]:
+    current.next = ListNode(val)
+    current = current.next
+values = [1, 2, 5]  
+list2 = ListNode(values[0])
+current = list2
+for val in values[1:]:
+    current.next = ListNode(val)
+    current = current.next
+
+result = solution.mergeTwoLists(list1, list2)
+print_linked_list(result)
 
 
