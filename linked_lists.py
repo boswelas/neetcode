@@ -119,8 +119,30 @@ class Solution:
         Reorder the nodes of the linked list to be in the following order: [0, 6, 1, 5, 2, 4, 3]
         Notice that in the general case for a list of length = n the nodes are reordered to be in the following order: [0, n-1, 1, n-2, 2, n-3, ...]
         You may not modify the values in the list's nodes, but instead you must reorder the nodes themselves."""
+        slow, fast = head, head.next
+        while fast and fast.next:
+            slow = slow.next
+            fast = fast.next.next 
         
-
+        second = slow.next
+        slow.next = None
+        prev = None
+        while second:
+            temp = second.next 
+            second.next = prev
+            prev = second
+            second = temp
+            
+        first = head
+        second = prev
+        while second:
+            temp1, temp2 = first.next, second.next 
+            first.next = second 
+            second.next = temp1
+            first = temp1
+            second = temp2 
+            
+        return
 
 
 
@@ -132,20 +154,15 @@ def print_linked_list(head):
     print()       
 
 solution = Solution()
-values = [1, 2, 4]  
+values = [2,4,6,8]
 list1 = ListNode(values[0])
 current = list1
 for val in values[1:]:
     current.next = ListNode(val)
     current = current.next
-values = [1, 2, 5]  
-list2 = ListNode(values[0])
-current = list2
-for val in values[1:]:
-    current.next = ListNode(val)
-    current = current.next
 
-result = solution.mergeTwoLists(list1, list2)
-print_linked_list(result)
+print_linked_list(list1)
+result = solution.reorderList(list1)
+print_linked_list(list1)
 
 
