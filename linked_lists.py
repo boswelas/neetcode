@@ -143,6 +143,26 @@ class Solution:
             second = temp2 
             
         return
+    
+    def removeNthFromEnd(self, head: Optional[ListNode], n: int) -> Optional[ListNode]:
+        """"You are given the beginning of a linked list head, and an integer n.
+        Remove the nth node from the end of the list and return the beginning of the list."""
+        dummy = ListNode(0, head)
+        l = dummy
+        r = head
+        
+        while n > 0:
+            r = r.next
+            n -= 1
+            
+        while r:
+            l = l.next
+            r = r.next
+            
+        l.next = l.next.next 
+        return dummy.next 
+            
+        
 
 
 
@@ -154,7 +174,7 @@ def print_linked_list(head):
     print()       
 
 solution = Solution()
-values = [2,4,6,8]
+values = [1, 2, 3, 4, 5]
 list1 = ListNode(values[0])
 current = list1
 for val in values[1:]:
@@ -162,7 +182,8 @@ for val in values[1:]:
     current = current.next
 
 print_linked_list(list1)
-result = solution.reorderList(list1)
+n = 2
+result = solution.removeNthFromEnd(list1, n)
 print_linked_list(list1)
 
 
