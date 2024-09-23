@@ -28,9 +28,24 @@ class Solution:
                 cost[i] += min(cost[i + 1], cost[i + 2])
                 
             return min(cost[0], cost[1])
+        
+        def rob(self, nums: List[int]) -> int:
+            """You are given an integer array nums where nums[i] represents the amount of money the ith house has. 
+            The houses are arranged in a straight line, i.e. the ith house is the neighbor of the (i-1)th and (i+1)th house.
+            You are planning to rob money from the houses, but you cannot rob two adjacent houses because the security 
+            system will automatically alert the police if two adjacent houses were both broken into.
+            Return the maximum amount of money you can rob without alerting the police."""
+            rob1, rob2 = 0, 0
+            
+            for n in nums:
+                temp = max(n + rob1, rob2)
+                rob1 = rob2
+                rob2 = temp
+                
+            return rob2
                 
 
 
 solution = Solution()
-cost = [10, 15, 20]
-print(solution.minCostClimbingStairs(cost))
+nums = [2,7,9,3,1]
+print(solution.rob(nums))
