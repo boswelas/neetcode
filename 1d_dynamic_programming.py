@@ -91,10 +91,30 @@ class Solution:
                     r += 1
                     
             return res
+        
+        def countSubstrings(self, s: str) -> int:
+            """Given a string s, return the number of substrings within s that are palindromes.
+            A palindrome is a string that reads the same forward and backward."""
+            res = 0
+            
+            for i in range(len(s)):
+                l, r = i, i
+                while l >= 0 and r < len(s) and s[l] == s[r]:
+                    res += 1
+                    l -= 1
+                    r += 1
+                    
+                l, r = i, i + 1
+                while l >= 0 and r < len(s) and s[l] == s[r]:
+                    res += 1
+                    l -= 1
+                    r += 1
+            return res
+
                     
 
 
 
 solution = Solution()
-s = "babad"
-print(solution.longestPalindrome(s))
+s = "aaa"
+print(solution.countSubstrings(s))
