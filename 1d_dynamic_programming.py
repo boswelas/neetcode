@@ -65,8 +65,36 @@ class Solution:
                 rob2 = temp
                 
             return rob2
+        
+        def longestPalindrome(self, s: str) -> str:
+            """Given a string s, return the longest substring of s that is a palindrome.
+            A palindrome is a string that reads the same forward and backward.
+            If there are multiple palindromic substrings that have the same length, return any one of them."""
+            res = ""
+            resLen = 0
+            
+            for i in range(len(s)):
+                l, r = i, i
+                while l >=0 and r < len(s) and s[l] == s[r]:
+                    if (r - l + 1) > resLen:
+                        res = s[l:r+1]
+                        resLen = r-l+1
+                    l -= 1
+                    r += 1
+                    
+                l, r = i, i + 1
+                while l >=0 and r < len(s) and s[l] == s[r]:
+                    if (r - l + 1) > resLen:
+                        res = s[l:r+1]
+                        resLen = r-l+1
+                    l -= 1
+                    r += 1
+                    
+            return res
+                    
+
 
 
 solution = Solution()
-nums = [5,1,2,6,12,7,9,3,4,10]
-print(solution.rob2(nums))
+s = "babad"
+print(solution.longestPalindrome(s))
