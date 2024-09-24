@@ -43,9 +43,30 @@ class Solution:
                 rob2 = temp
                 
             return rob2
+        
+        def rob2(self, nums: List[int]) -> int:
+            """You are given an integer array nums where nums[i] represents the amount of money the ith house has. 
+            The houses are arranged in a circle, i.e. the first house and the last house are neighbors.
+            You are planning to rob money from the houses, but you cannot rob two adjacent houses because the security 
+            system will automatically alert the police if two adjacent houses were both broken into.
+            Return the maximum amount of money you can rob without alerting the police."""
+            if len(nums) == 1:
+                return nums[0]
+            
+            return max(self.helper_rob2(nums[:-1]), self.helper_rob2(nums[1:]))
+            
+            
+        def helper_rob2(self, nums):
+            rob1, rob2 = 0, 0
+            
+            for n in nums:
+                temp = max(rob1 + n, rob2)
+                rob1 = rob2
+                rob2 = temp
                 
+            return rob2
 
 
 solution = Solution()
-nums = [2,7,9,3,1]
-print(solution.rob(nums))
+nums = [5,1,2,6,12,7,9,3,4,10]
+print(solution.rob2(nums))
