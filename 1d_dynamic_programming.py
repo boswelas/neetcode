@@ -110,11 +110,57 @@ class Solution:
                     l -= 1
                     r += 1
             return res
+        
+        def numDecodings(self, s: str) -> int:
+            """A string consisting of uppercase english characters can be encoded to a number using the following mapping:
+            'A' -> "1" 'B' -> "2" ... 'Z' -> "26"
+            To decode a message, digits must be grouped and then mapped back into letters using the reverse of the mapping above. 
+            There may be multiple ways to decode a message. For example, "1012" can be mapped into:
+            "JAB" with the grouping (10 1 2)
+            "JL" with the grouping (10 12)
+            The grouping (1 01 2) is invalid because 01 cannot be mapped into a letter since it contains a leading zero.
+            Given a string s containing only digits, return the number of ways to decode it. 
+            You can assume that the answer fits in a 32-bit integer."""
+            if not s or s[0] == '0':
+                return 0
 
-                    
+            n = len(s)
+            dp = [0] * (n + 1)
+            dp[0] = 1
+            dp[1] = 1
 
+            for i in range(2, n + 1):
+                one_digit = int(s[i - 1])
+                two_digits = int(s[i - 2:i])
+
+                if one_digit != 0:
+                    dp[i] += dp[i - 1]
+
+                if 10 <= two_digits <= 26:
+                    dp[i] += dp[i - 2]
+
+            return dp[n]
+        
+        def coinChange(self, coins: List[int], amount: int) -> int:
+            """You are given an integer array coins representing coins of different denominations (e.g. 1 dollar, 5 dollars, etc) 
+            and an integer amount representing a target amount of money.
+            Return the fewest number of coins that you need to make up the exact target amount. 
+            If it is impossible to make up the amount, return -1.
+            You may assume that you have an unlimited number of each coin."""
+            res = [amount + 1] * (amount + 1)
+            res[0] = 0
+            
+            for i in range(1, amount + 1):
+                for coin in coins:
+                    if i - coin >= 0:
+                        res[i] = min(1 + res[i - coin], res[i])
+                        
+            return res[amount] if res[amount] != (amount + 1) else -1
+                
+                                
 
 
 solution = Solution()
-s = "aaa"
-print(solution.countSubstrings(s))
+coins = [2] 
+amount = 3
+print(solution.coinChange(coins, amount))
