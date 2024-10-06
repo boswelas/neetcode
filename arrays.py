@@ -1,3 +1,4 @@
+from collections import defaultdict
 from typing import List
 
 
@@ -38,70 +39,63 @@ class Solution:
     def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
         """Given an array of strings strs, group all anagrams together into sublists. 
         You may return the output in any order."""
-        sorted_dict = {}
-        anagram_list = []
-        
-        for i in range(0, len(strs)):
-            res = ''.join(sorted(strs[i]))
-            if res not in sorted_dict:
-                sorted_dict[res] = [i]
+        sorted_strs = {}
+        result = []
+
+        for s in strs:
+            temp = ''.join(sorted(s))
+            if temp in sorted_strs:
+                result[sorted_strs[temp]].append(s)
             else:
-                sorted_dict[res].append(i)
-                
-        for key in sorted_dict:
-            item = []
-            for value in sorted_dict[key]:
-                item.append(strs[value])
-            anagram_list.append(item)
-            
-        return anagram_list
+                sorted_strs[temp] = len(result)
+                result.append([s])
+
+        return result
     
     def topKFrequent(self, nums: List[int], k: int) -> List[int]:
         """Given an integer array nums and an integer k, return the k most frequent elements 
         within the array."""
-        visited = {}
-        kfrequent = []
+        occurences = defaultdict(int)
+        frequencies = [[] for i in range(len(nums) + 1)]
         
         for num in nums:
-            if num not in visited:
-                visited[num] = 1
-            else:
-                visited[num] += 1
-                
-        for i in range(0, k):
-            frequent = max(visited, key=visited.get)
-            kfrequent.append(frequent)
-            visited.pop(frequent)
+            occurences[num] += 1
             
-        return kfrequent
+        for n, c in occurences.items():
+            frequencies[c].append(n)
+            
+        result = []
+        
+        for i in range(len(frequencies) - 1, 0, -1):
+            for num in frequencies[i]:
+                result.append(num)
+                if len(result) == k:
+                    return result 
     
     def encode(self, strs: List[str]) -> str:
         """Design an algorithm to encode a list of strings to a single string. The 
         encoded string is then decoded back to the original list of strings."""
-        strs_string = ""
-        for i in range(0, len(strs)):
-            strs_string += str(len(strs[i])) + "#" + strs[i]
-        return strs_string
+        strs_encoded = ''
+        for s in strs:
+            strs_encoded = strs_encoded + str(len(s)) + "#" + s
+        
+        return strs_encoded
           
     def decode(self, s: str) -> List[str]:
         result = []
         i = 0
-        
         while i < len(s):
-            count = ""
-            while s[i].isdigit():
-                count += s[i]
+            count = ''
+            while s[i] != "#":
+                count = count + s[i]
                 i += 1
-            count = int(count)
             i += 1
-            temp = ""
-            while count > 0:
-                temp += "".join(s[i])
-                count -= 1
-                i += 1
-            result.append(temp)
-            
+            count = int(count)
+            result.append(s[i:i+count])
+            i+=count
+        
         return result
+        
     
     def productExceptSelf(self, nums: List[int]) -> List[int]:
         """Given an integer array nums, return an array output where output[i] is 
@@ -197,6 +191,5 @@ class Solution:
         
     
 solution = Solution()
-nums=[-1,-2,-3,-4,-5]
-target=-8
-print(solution.twoSum(nums, target))
+strs = ["neet","code","love","you"]
+print(solution.decode(solution.encode(strs)))
