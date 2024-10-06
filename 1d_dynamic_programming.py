@@ -156,11 +156,16 @@ class Solution:
                         res[i] = min(1 + res[i - coin], res[i])
                         
             return res[amount] if res[amount] != (amount + 1) else -1
+        
+        def maxProduct(self, nums: List[int]) -> int:
+            """Given an integer array nums, find a subarray that has the largest product within the array and return it.
+            A subarray is a contiguous non-empty sequence of elements within an array.
+            You can assume the output will fit into a 32-bit integer."""
+
                 
                                 
 
 
 solution = Solution()
-coins = [2] 
-amount = 3
-print(solution.coinChange(coins, amount))
+nums = [2, 3, -2, 4]
+print(solution.maxProduct(nums))

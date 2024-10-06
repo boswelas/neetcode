@@ -5,12 +5,13 @@ class Solution:
     def hasDuplicate(self, nums: List[int]) -> bool:
         """Given an integer array nums, return true if any value appears more than 
          once in the array, otherwise return false."""
-        visited = {}
-        for i in nums:
-            if i not in visited:
-                visited[i] = True
-            else:
+        values = set()
+
+        for num in nums:
+            if num in values:
                 return True
+            else:
+                values.add(num)
         return False
     
     def isAnagram(self, s: str, t: str) -> bool:
@@ -19,41 +20,20 @@ class Solution:
         another string, but the order of the characters can be different."""
         if len(s) != len(t):
             return False
-        
-        visited = {}
-        
-        for char in s:
-            if char not in visited:
-                visited[char] = 1
-            else:
-                visited[char] += 1
-
-        for char in t:
-            if char in visited:
-                visited[char] -= 1
-                if visited[char] == 0:
-                    visited.pop(char)
-            else:
-                return False
             
-        if visited:
-            return False
-            
-        return True
+        return sorted(s) == sorted(t)
     
     def twoSum(self, nums: List[int], target: int) -> List[int]:
         """Given an array of integers nums and an integer target, return the indices i and j 
         such that nums[i] + nums[j] == target and i != j."""
-        i = 0
-        while i <= len(nums) - 2:
-            j = i + 1
-            while j <= len(nums)-1:
-                if nums[i] + nums[j] == target:
-                    return [i, j]
-                else:
-                    j += 1
-            i += 1
-        return []
+        values = {}
+        
+        for i in range(0, len(nums)):
+            diff = target - nums[i]
+            if diff in values:
+                return [values[diff], i]
+            else:
+                values[nums[i]] = i
     
     def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
         """Given an array of strings strs, group all anagrams together into sublists. 
@@ -198,6 +178,17 @@ class Solution:
                 longest = max(length, longest)
                 
         return longest
+    
+    def fourSumCount(self, nums1: List[int], nums2: List[int], nums3: List[int], nums4: List[int]) -> int:
+        """Given four integer arrays nums1, nums2, nums3, and nums4 all of length n, return the number of tuples (i, j, k, l) such that:
+        0 <= i, j, k, l < n
+        nums1[i] + nums2[j] + nums3[k] + nums4[l] == 0"""
+        tuples = 0
+        
+        #check 0 <= i, j, k, l < n
+        #check nums1[i] + nums2[j] + nums3[k] + nums4[l] == 0
+        
+        return tuples
         
         
         
@@ -206,5 +197,6 @@ class Solution:
         
     
 solution = Solution()
-nums = [2,20,4,10,3,4,5]
-print(solution.longestConsecutive(nums))
+nums=[-1,-2,-3,-4,-5]
+target=-8
+print(solution.twoSum(nums, target))
