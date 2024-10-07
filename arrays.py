@@ -39,39 +39,34 @@ class Solution:
     def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
         """Given an array of strings strs, group all anagrams together into sublists. 
         You may return the output in any order."""
-        sorted_strs = {}
-        result = []
-
+        sorted_strs = defaultdict(list)
+        
         for s in strs:
-            temp = ''.join(sorted(s))
-            if temp in sorted_strs:
-                result[sorted_strs[temp]].append(s)
-            else:
-                sorted_strs[temp] = len(result)
-                result.append([s])
-
-        return result
+            sorted_s = ''.join(sorted(s))
+            sorted_strs[sorted_s].append(s)
+        return sorted_strs.values()
     
     def topKFrequent(self, nums: List[int], k: int) -> List[int]:
         """Given an integer array nums and an integer k, return the k most frequent elements 
         within the array."""
-        occurences = defaultdict(int)
-        frequencies = [[] for i in range(len(nums) + 1)]
+        frequencies = defaultdict(int)
+        occurrences = [[] for i in range(len(nums) + 1)]
         
         for num in nums:
-            occurences[num] += 1
-            
-        for n, c in occurences.items():
-            frequencies[c].append(n)
-            
-        result = []
+            frequencies[num] += 1
         
-        for i in range(len(frequencies) - 1, 0, -1):
-            for num in frequencies[i]:
+        for key, value in frequencies.items():
+            occurrences[value].append(key)
+        
+        result = []
+        for i in range(len(occurrences) - 1, 0, -1):
+            for num in occurrences[i]:
                 result.append(num)
                 if len(result) == k:
-                    return result 
-    
+                    return result
+                
+        
+        
     def encode(self, strs: List[str]) -> str:
         """Design an algorithm to encode a list of strings to a single string. The 
         encoded string is then decoded back to the original list of strings."""
@@ -95,8 +90,7 @@ class Solution:
             i+=count
         
         return result
-        
-    
+          
     def productExceptSelf(self, nums: List[int]) -> List[int]:
         """Given an integer array nums, return an array output where output[i] is 
         the product of all the elements of nums except nums[i].
@@ -191,5 +185,6 @@ class Solution:
         
     
 solution = Solution()
-strs = ["neet","code","love","you"]
-print(solution.decode(solution.encode(strs)))
+nums = [1,2,2,3,3,3]
+k = 2
+print(solution.topKFrequent(nums, k))
