@@ -64,8 +64,6 @@ class Solution:
                 result.append(num)
                 if len(result) == k:
                     return result
-                
-        
         
     def encode(self, strs: List[str]) -> str:
         """Design an algorithm to encode a list of strings to a single string. The 
@@ -95,30 +93,24 @@ class Solution:
         """Given an integer array nums, return an array output where output[i] is 
         the product of all the elements of nums except nums[i].
         Follow-up: Could you solve it in O(n) time without using the division operation?"""
-        forward = [nums[0]]
-        backward = [nums[-1]]
-        output = []
+        first = [1]
+        second = [1]
         
-        for i in range(1, len(nums)):
-            forward.append(nums[i] * forward[i-1])
+        for num in nums:
+            first.append(num * first[-1])
+            
+        for i in range(len(nums) - 1, 0, -1):
+            second.append(nums[i] * second[-1])
+            
+        second = second[::-1]
 
-        k = 0
-        for i in range(len(nums) - 2, 0, -1):
-            backward.append(nums[i] * backward[k])
-            k += 1
-        backward.append(1)
-        backward.reverse()
-
-        for i in range(0, len(nums)):
-            if i - 1 < 0:
-                output.append(backward[i + 1])
-            elif i + 1 == len(nums):
-                output.append(forward[i - 1])
-            else:
-                output.append(forward[i - 1] * backward[i+1])
-
-        return output
-    
+        for i in range(len(second)):
+            first[i] = first[i] * second[i]
+        
+        return first[:-1]          
+                       
+            
+       
     def isValidSudoku(self, board: List[List[str]]) -> bool:
         """You are given a a 9 x 9 Sudoku board board. A Sudoku board is valid if 
         the following rules are followed:
@@ -185,6 +177,5 @@ class Solution:
         
     
 solution = Solution()
-nums = [1,2,2,3,3,3]
-k = 2
-print(solution.topKFrequent(nums, k))
+nums = [1,2,4,6]
+print(solution.productExceptSelf(nums))
