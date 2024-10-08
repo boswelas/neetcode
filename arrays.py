@@ -107,9 +107,7 @@ class Solution:
         for i in range(len(second)):
             first[i] = first[i] * second[i]
         
-        return first[:-1]          
-                       
-            
+        return first[:-1]            
        
     def isValidSudoku(self, board: List[List[str]]) -> bool:
         """You are given a a 9 x 9 Sudoku board board. A Sudoku board is valid if 
@@ -119,23 +117,24 @@ class Solution:
         Each of the nine 3 x 3 sub-boxes of the grid must contain the digits 1-9 
         without duplicates.
         Return true if the Sudoku board is valid, otherwise return false"""
-        row, col, squares = {}, {}, {}
-        for i in range(9):
-            row[i] = set()
-            col[i] = set()
-            for j in range(9):
-                squares[i//3, j//3] = set()
-
-        for i in range(9):
-            for j in range(9):
+        cols = defaultdict(set)
+        rows = defaultdict(set)
+        grids = defaultdict(set)
+        
+        m = len(board)
+        n = len(board[0])
+        
+        for i in range(0, m):
+            for j in range(0, n):
                 if board[i][j].isdigit():
-                    num = board[i][j]
-                    if num in row[i] or num in col[j] or num in squares[i//3, j//3]:
+                    if board[i][j] in cols[j] or board[i][j] in rows[i] or board[i][j] in grids[(i//3),(j//3)]:
                         return False
-                    row[i].add(num)
-                    col[j].add(num)
-                    squares[i//3, j//3].add(num)
- 
+                    else:
+                        cols[j].add(board[i][j])
+                        rows[i].add(board[i][j])
+                        grids[(i//3),(j//3)].add(board[i][j])
+
+        
         return True
     
     def longestConsecutive(self, nums: List[int]) -> int:
@@ -144,21 +143,17 @@ class Solution:
         A consecutive sequence is a sequence of elements in which each element is exactly 
         1 greater than the previous element.
         You must write an algorithm that runs in O(n) time."""
-        if len(nums) == 1:
-            return 1
-        
         numSet = set(nums)
-        longest = 0
+        result = 0
         
-        for n in nums:
-            if (n - 1) not in numSet:
-                length = 0
-                while (n + length) in numSet:
-                    length += 1
-                longest = max(length, longest)
-                
-        return longest
-    
+        for num in numSet:
+            if num - 1 not in numSet:
+                count = 1
+                while num + count in numSet:
+                    count += 1
+                result = max(result, count)
+        return result
+        
     def fourSumCount(self, nums1: List[int], nums2: List[int], nums3: List[int], nums4: List[int]) -> int:
         """Given four integer arrays nums1, nums2, nums3, and nums4 all of length n, return the number of tuples (i, j, k, l) such that:
         0 <= i, j, k, l < n
@@ -177,5 +172,5 @@ class Solution:
         
     
 solution = Solution()
-nums = [1,2,4,6]
-print(solution.productExceptSelf(nums))
+nums = [100,4,200,1,3,2]
+print(solution.longestConsecutive(nums))
