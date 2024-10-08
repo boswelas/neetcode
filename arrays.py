@@ -105,9 +105,9 @@ class Solution:
         second = second[::-1]
 
         for i in range(len(second)):
-            first[i] = first[i] * second[i]
+            second[i] = first[i] * second[i]
         
-        return first[:-1]            
+        return second          
        
     def isValidSudoku(self, board: List[List[str]]) -> bool:
         """You are given a a 9 x 9 Sudoku board board. A Sudoku board is valid if 

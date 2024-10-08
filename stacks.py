@@ -9,25 +9,21 @@ class MinStack:
         self.stack = []
         self.min_stack = []
 
-    def push(self, val: int) -> None:
-        """void push(int val) pushes the element val onto the stack."""
+    def push(self, val):
         self.stack.append(val)
-        if not self.min_stack:
-            self.min_stack.append(val)
-        else:
+        if self.min_stack:
             self.min_stack.append(min(val, self.min_stack[-1]))
-
-    def pop(self) -> None:
-        """void pop() removes the element on the top of the stack."""
+        else:
+            self.min_stack.append(val)
+        
+    def pop(self):
         self.stack.pop()
         self.min_stack.pop()
-
-    def top(self) -> int:
-        """int top() gets the top element of the stack."""
+        
+    def top(self):
         return self.stack[-1]
-
-    def getMin(self) -> int:
-        """int getMin() retrieves the minimum element in the stack."""
+    
+    def getMin(self):
         return self.min_stack[-1]
 
 class Solution:
@@ -58,20 +54,22 @@ class Solution:
         The operators include '+', '-', '*', and '/'.
         Assume that division between integers always truncates toward zero."""
         stack = []
-        for c in tokens:
-            if c == "+":
+        for t in tokens:
+            if t == "+":
                 stack.append(stack.pop() + stack.pop())
-            elif c == "-":
+            elif t == "-":
                 a, b = stack.pop(), stack.pop()
                 stack.append(b - a)
-            elif c == "*":
+            elif t == "*":
                 stack.append(stack.pop() * stack.pop())
-            elif c == "/":
+            elif t == "/":
                 a, b = stack.pop(), stack.pop()
-                stack.append(int(float(b) / a))
+                stack.append(int(float(b//a)))
             else:
-                stack.append(int(c))
+                stack.append(int(t))
         return stack[0]
+        
+
     
     def generateParenthesis(self, n: int) -> List[str]:
         """You are given an integer n. Return all well-formed parentheses strings 
@@ -150,5 +148,5 @@ class Solution:
 
 
 solution = Solution()
-s = "[]"
-print(solution.isValid(s))
+tokens = ["2","1","+","3","*"]
+print(solution.evalRPN(tokens))
