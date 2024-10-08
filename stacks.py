@@ -38,31 +38,18 @@ class Solution:
         Every open bracket is closed by the same type of close bracket.
         Open brackets are closed in the correct order.
         Every close bracket has a corresponding open bracket of the same type."""
+        pairs = {")":"(", "}":"{", "]":"["}
         stack = []
         
-        for val in s:
-            if val == ")":
-                if stack and stack[-1] == "(":
+        for c in s:
+            if c in pairs:
+                if stack and stack[-1] == pairs[c]:
                     stack.pop()
                 else:
-                    stack.append(val)
-            elif val == "}":
-                if stack and stack[-1] == "{":
-                    stack.pop()
-                else:
-                    stack.append(val)
-            elif stack and val == "]":
-                if stack[-1] == "[":
-                    stack.pop()
-                else:
-                    stack.append(val)
+                    return False
             else:
-                stack.append(val)
-        
-        if len(stack) == 0:
-            return True
-        return False
-
+                stack.append(c)
+        return not stack
 
     def evalRPN(self, tokens: List[str]) -> int:
         """You are given an array of strings tokens that represents a valid arithmetic expression in Reverse Polish Notation.
@@ -163,7 +150,5 @@ class Solution:
 
 
 solution = Solution()
-target = 13
-position = [10,2,5,7,4,6,11]
-speed = [7,5,10,5,9,4,1]
-print(solution.carFleet(target, position, speed))
+s = "[]"
+print(solution.isValid(s))
