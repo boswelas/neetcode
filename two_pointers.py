@@ -7,18 +7,18 @@ class Solution:
         """Given a string s, return true if it is a palindrome, otherwise return false.
         A palindrome is a string that reads the same forward and backward. It is also 
         case-insensitive and ignores all non-alphanumeric characters."""
-        l, r = 0, len(s)-1
+        l, r = 0, len(s) - 1
         
         while l < r:
-            while l < r and not s[l].isalnum():
+            if not s[l].isalnum():
                 l += 1
-            while r > l and not s[r].isalnum():
+            elif not s[r].isalnum():
                 r -= 1
-
-            if s[l].lower() != s[r].lower():
+            elif s[l].lower() == s[r].lower():
+                l += 1
+                r -= 1
+            else:
                 return False
-            l += 1
-            r -= 1
         return True
     
     def twoSum(self, numbers: List[int], target: int) -> List[int]:
@@ -28,16 +28,18 @@ class Solution:
         cannot be equal, therefore you may not use the same element twice.
         There will always be exactly one valid solution.
         Your solution must use O(1) additional space."""
-        l, r = 0, 1
+        l, r = 0, len(numbers) - 1
         
         while l < r:
-            while r < len(numbers):
-                if numbers[l] + numbers[r] == target:
-                    return [l+1, r+1]
-                r += 1
-            l += 1
-            r = l + 1
-        return
+            temp = numbers[l] + numbers[r]
+            if temp == target:
+                return [l+1, r+1]
+            elif temp > target:
+                r -= 1
+            else:
+                l += 1
+   
+                
     
     def threeSum(self, nums: List[int]) -> List[List[int]]:
         """Given an integer array nums, return all the triplets 
@@ -118,5 +120,6 @@ class Solution:
         
     
 solution = Solution()
-height = [0,2,0,3,1,0,1,3,2,1]
-print(solution.trap(height))
+numbers = [1,2,3,4]
+target = 3
+print(solution.twoSum(numbers, target))
