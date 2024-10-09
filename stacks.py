@@ -57,21 +57,21 @@ class Solution:
         for t in tokens:
             if t == "+":
                 stack.append(stack.pop() + stack.pop())
+            elif t == "*":
+                stack.append(stack.pop() * stack.pop())
             elif t == "-":
                 a, b = stack.pop(), stack.pop()
                 stack.append(b - a)
-            elif t == "*":
-                stack.append(stack.pop() * stack.pop())
             elif t == "/":
                 a, b = stack.pop(), stack.pop()
-                stack.append(int(float(b//a)))
+                stack.append(int(float(b/a)))
             else:
                 stack.append(int(t))
         return stack[0]
-           
+        
     def generateParenthesis(self, n: int) -> List[str]:
         """You are given an integer n. Return all well-formed parentheses strings 
-        that you can generate with n pairs of parentheses. 1 <= n <= 7"""
+        that you can generate with n pairs of parentheses. 1 <= n <= 7"""      
         stack = []
         result = []
         
@@ -79,14 +79,17 @@ class Solution:
             if openN == closedN == n:
                 result.append("".join(stack))
                 return
+            
             if openN < n:
                 stack.append("(")
                 backtrack(openN + 1, closedN)
                 stack.pop()
+                
             if closedN < openN:
                 stack.append(")")
                 backtrack(openN, closedN + 1)
                 stack.pop()
+                
         backtrack(0,0)
         return result
     
@@ -96,8 +99,16 @@ class Solution:
         Return an array result where result[i] is the number of days after the ith day 
         before a warmer temperature appears on a future day. If there is no day in the 
         future where a warmer temperature will appear for the ith day, set result[i] to 0 instead."""
+        stack = []
+        result = [0] * len(temperatures)
         
-    
+        for index, temp in enumerate(temperatures):
+            while stack and temp > stack[-1][0]:
+                t, i = stack.pop()
+                result[i] = index - i
+            stack.append([temp, index])
+        return result
+
     def carFleet(self, target: int, position: List[int], speed: List[int]) -> int:
         """There are n cars traveling to the same destination on a one-lane highway.
         You are given two arrays of integers position and speed, both of length n.
@@ -111,21 +122,21 @@ class Solution:
         If a car catches up to a car fleet the moment the fleet reaches the destination, then the car is considered 
         to be part of the fleet.
         Return the number of different car fleets that will arrive at the destination."""
-        
-        pair = [(p, s) for p, s in zip(position, speed)]
-        pair.sort(reverse=True)
-        
+        pairs = [(p, s) for p, s in zip(position, speed)]
+        pairs.sort(reverse=True)
         stack = []
         
-        for p, s in pair: 
-            stack.append((target - p) / s)
-            if len(stack) >= 2 and stack[-1] <= stack[-2]:
-                stack.pop()
-        
+        for p, s in pairs:
+            time = ((target - p) / s)
+            if not stack or time > stack[-1]:
+                stack.append(time)
         return len(stack)
-
+        
                 
-
+        
+       
 solution = Solution()
-n = 3
-print(solution.generateParenthesis(n))
+target=10
+position=[4,1,0,7]
+speed=[2,2,1,1]
+print(solution.carFleet(target, position, speed))
