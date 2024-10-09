@@ -68,9 +68,7 @@ class Solution:
             else:
                 stack.append(int(t))
         return stack[0]
-        
-
-    
+           
     def generateParenthesis(self, n: int) -> List[str]:
         """You are given an integer n. Return all well-formed parentheses strings 
         that you can generate with n pairs of parentheses. 1 <= n <= 7"""
@@ -81,18 +79,15 @@ class Solution:
             if openN == closedN == n:
                 result.append("".join(stack))
                 return
-            
             if openN < n:
                 stack.append("(")
                 backtrack(openN + 1, closedN)
                 stack.pop()
-                
             if closedN < openN:
                 stack.append(")")
                 backtrack(openN, closedN + 1)
                 stack.pop()
-                    
-        backtrack(0, 0)
+        backtrack(0,0)
         return result
     
     def dailyTemperatures(self, temperatures: List[int]) -> List[int]:
@@ -101,19 +96,7 @@ class Solution:
         Return an array result where result[i] is the number of days after the ith day 
         before a warmer temperature appears on a future day. If there is no day in the 
         future where a warmer temperature will appear for the ith day, set result[i] to 0 instead."""
-        days = []
         
-        for i in range(0, len(temperatures)):
-            count = 0
-            for k in range(i+1, len(temperatures)):
-                count += 1
-                if temperatures[k] > temperatures[i]:
-                    days.append(count)
-                    break
-            if len(days) < i + 1:
-                days.append(0)
-            
-        return days
     
     def carFleet(self, target: int, position: List[int], speed: List[int]) -> int:
         """There are n cars traveling to the same destination on a one-lane highway.
@@ -142,11 +125,7 @@ class Solution:
         return len(stack)
 
                 
-    
-    
-
-
 
 solution = Solution()
-tokens = ["2","1","+","3","*"]
-print(solution.evalRPN(tokens))
+n = 3
+print(solution.generateParenthesis(n))
