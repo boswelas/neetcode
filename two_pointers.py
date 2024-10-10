@@ -74,18 +74,19 @@ class Solution:
         the height of the ith bar.
         You may choose any two bars to form a container. Return the maximum 
         amount of water a container can store."""
-        area = 0
+        result = 0
         l, r = 0, len(height) - 1
-
+        
         while l < r:
-            temp = min(height[l], height[r])
-            area = max(area, (temp * (r - l)))
-            if height[l] < height[r]:
+            temp = min(height[l], height[r]) * (r - l)
+            result = max(result, temp)
+            if height[l] <= height[r]:
                 l += 1
-            elif height[r] <= height[l]:
+            else:
                 r -= 1
-            
-        return area
+        return result
+        
+
     
     def trap(self, height: List[int]) -> int:
         """You are given an array non-negative integers heights which represent an 
@@ -124,5 +125,5 @@ class Solution:
         
     
 solution = Solution()
-nums=[-1,0,1,2,-1,-4]
-print(solution.threeSum(nums))
+height = [2,2,2]
+print(solution.maxArea(height))
