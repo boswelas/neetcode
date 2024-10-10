@@ -122,17 +122,17 @@ class Solution:
         If a car catches up to a car fleet the moment the fleet reaches the destination, then the car is considered 
         to be part of the fleet.
         Return the number of different car fleets that will arrive at the destination."""
-        pairs = [(p, s) for p, s in zip(position, speed)]
-        pairs.sort(reverse=True)
+        cars = [(p, s) for p, s in zip(position, speed)]
+        cars.sort(reverse=True)
         stack = []
         
-        for p, s in pairs:
-            time = ((target - p) / s)
+        for p, s in cars:
+            time = (target - p) / s
             if not stack or time > stack[-1]:
                 stack.append(time)
+                
         return len(stack)
         
-                
         
        
 solution = Solution()
