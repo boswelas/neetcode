@@ -10,35 +10,33 @@ class Solution:
         in the future to sell it.
         Return the maximum profit you can achieve. You may choose to not make any transactions, 
         in which case the profit would be 0."""
+        l, r = 0, 1
         profit = 0
         
-        lowest = prices[0]
-        for price in prices:
-            if price < lowest:
-                lowest = price
-            profit = max(profit, price - lowest)
+        while r < len(prices):
+            if prices[l] < prices[r]:
+                profit = max(profit, prices[r] - prices[l])
+            else:
+                l = r
+            r += 1
         return profit
-    
+            
     def lengthOfLongestSubstring(self, s: str) -> int:
         """Given a string s, find the length of the longest substring without 
         duplicate characters.
         A substring is a contiguous sequence of characters within a string."""
-        queue = []
+        chars = set()
         result = 0
+        l = 0
         
-        for char in s:
-            if char not in queue:
-                queue.append(char)
-            else:
-                while queue[0] != char:
-                    queue.pop(0)
-                queue.pop(0)
-                queue.append(char)   
-            result = max(result, len(queue))             
-        
+        for r in range(len(s)):
+            while s[r] in chars:
+                chars.remove(s[l])
+                l += 1
+            chars.add(s[r])
+            result = max(result, r-l+1)
         return result
-    
-    
+       
     def characterReplacement(self, s: str, k: int) -> int:
         """You are given a string s consisting of only uppercase english characters 
         and an integer k. You can choose up to k characters of the string and replace 
@@ -110,7 +108,6 @@ class Solution:
             
         return False
     
-    
     def minWindow(self, s: str, t: str) -> str:
         """Given two strings s and t, return the shortest substring of s such that 
         every character in t, including duplicates, is present in the substring. 
@@ -139,6 +136,5 @@ class Solution:
     
     
 solution = Solution()
-s = "OUZODYXAZV"
-t = "XYZ"
-print(solution.minWindow(s, t))
+s = "xxxx"
+print(solution.lengthOfLongestSubstring(s))
