@@ -12,37 +12,47 @@ class Solution:
         l, r = 0, len(nums) - 1
         
         while l <= r:
-            mid = l + ((r-l) // 2)
-            if nums[mid] == target:
-                return mid
-            elif nums[mid] > target:
-                r = mid - 1
+            m = l + ((r - l) // 2)
+            if nums[m] == target:
+                return m
+            elif nums[m] < target:
+                l = m + 1
             else:
-                l = mid + 1
-                        
+                r = m - 1
+                
         return -1
-    
+        
     def searchMatrix(self, matrix: List[List[int]], target: int) -> bool:
         """You are given an m x n 2-D integer array matrix and an integer target.
         Each row in matrix is sorted in non-decreasing order.
         The first integer of every row is greater than the last integer of the previous row.
         Return true if target exists within matrix or false otherwise.
         Can you write a solution that runs in O(log(m * n)) time?"""
-        for i in range(len(matrix)-1, -1, -1):
-            if matrix[i][0] <= target:
-                break  
+        top, bottom = 0, len(matrix) - 1
+        l, r = 0, len(matrix[0]) - 1
+        row = 0
         
-        l, r = 0, len(matrix[i]) - 1
-        
+        while top <= bottom:
+            row = (top + bottom) // 2
+            if target < matrix[row][0]:
+                bottom = row - 1
+            elif target > matrix[row][-1]:
+                top = row + 1
+            else:
+                break
+            
         while l <= r:
-            mid = l + ((r - l) // 2)
-            if matrix[i][mid] == target:
+            mid = (l + r) // 2
+            if target == matrix[row][mid]:
                 return True
-            elif matrix[i][mid] > target:
+            elif target < matrix[row][mid]:
                 r = mid - 1
             else:
                 l = mid + 1
+                
         return False
+
+                    
 
     def minEatingSpeed(self, piles: List[int], h: int) -> int:
         """You are given an integer array piles where piles[i] is the number of bananas 
@@ -155,6 +165,6 @@ class TimeMap:
         return result
 
 solution = Solution()
-nums = [3,4,5,6,1,2] 
-target = 6
-print(solution.search_rotated(nums, target))
+matrix = [[1,2,4,8],[10,11,12,13],[14,20,30,40]]
+target = 15
+print(solution.searchMatrix(matrix, target))
