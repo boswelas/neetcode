@@ -1,4 +1,7 @@
+import string
 from typing import List
+from collections import Counter
+
 
 
 class Solution:
@@ -66,7 +69,39 @@ class Solution:
         if len(s1) > len(s2):
             return False
         
+        s1_dict = dict.fromkeys(string.ascii_lowercase, 0)
+        s2_dict = dict.fromkeys(string.ascii_lowercase, 0)
         
+        for i in range(len(s1)):
+            s1_dict[s1[i]] += 1
+            s2_dict[s2[i]] += 1
+        
+        matches = 0
+        
+        for key in s1_dict:
+            if s2_dict[key] == s1_dict[key]:
+                matches += 1
+
+        l = 0  
+        for r in range(len(s1), len(s2)):
+            if matches == 26:
+                return True
+            l_key = s2[l]
+            s2_dict[l_key] -= 1
+            if s2_dict[l_key] + 1 == s1_dict[l_key]:
+                matches -= 1
+            elif s2_dict[l_key] == s1_dict[l_key]:
+                matches += 1
+            l+=1
+            r_key = s2[r]
+            s2_dict[r_key] += 1
+            if s2_dict[r_key] == s1_dict[r_key]:
+                matches += 1
+            elif s2_dict[r_key] - 1 == s1_dict[r_key]:
+                matches -= 1
+        return matches == 26
+            
+            
     
     def minWindow(self, s: str, t: str) -> str:
         """Given two strings s and t, return the shortest substring of s such that 
@@ -96,7 +131,7 @@ class Solution:
     
     
 solution = Solution()
-s1 = "abc" 
-s2 = "lecabee"
+s1="adc"
+s2="dcda"
 
 print(solution.checkInclusion(s1, s2))
