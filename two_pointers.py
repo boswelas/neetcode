@@ -46,9 +46,9 @@ class Solution:
         The output should not contain any duplicate triplets. 
         You may return the output and the triplets in any order."""
         nums.sort()
-        result = set()
+        vals = set()
         
-        for i in range(0, len(nums) - 2):
+        for i in range(0, len(nums)-2):
             if i > 0 and nums[i] == nums[i - 1]:
                 continue
             
@@ -60,31 +60,32 @@ class Solution:
             while j < k:
                 temp = nums[i] + nums[j] + nums[k]
                 if temp == 0:
-                    result.add((nums[i], nums[j], nums[k]))
+                    vals.add((nums[i], nums[j], nums[k]))
                     j += 1
                     k -= 1
                 elif temp < 0:
                     j += 1
                 else:
                     k -= 1
-        return [list(i) for i in result]      
-       
+        return [list(v) for v in vals]
+        
     def maxArea(self, height: List[int]) -> int:
         """You are given an integer array heights where heights[i] represents 
         the height of the ith bar.
         You may choose any two bars to form a container. Return the maximum 
         amount of water a container can store."""
-        result = 0
+        water = 0
         l, r = 0, len(height) - 1
         
         while l < r:
             temp = min(height[l], height[r]) * (r - l)
-            result = max(result, temp)
-            if height[l] <= height[r]:
+            water = max(temp, water)
+            if height[l] < height[r]:
                 l += 1
             else:
                 r -= 1
-        return result
+                
+        return water
 
     def trap(self, height: List[int]) -> int:
         """You are given an array non-negative integers heights which represent an 
@@ -123,5 +124,5 @@ class Solution:
         
     
 solution = Solution()
-height = [2,2,2]
-print(solution.maxArea(height))
+nums=[0,0,0,0]
+print(solution.threeSum(nums))
