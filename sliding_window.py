@@ -100,9 +100,7 @@ class Solution:
             elif s2_dict[r_key] - 1 == s1_dict[r_key]:
                 matches -= 1
         return matches == 26
-            
-            
-    
+
     def minWindow(self, s: str, t: str) -> str:
         """Given two strings s and t, return the shortest substring of s such that 
         every character in t, including duplicates, is present in the substring. 

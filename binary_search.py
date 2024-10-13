@@ -1,3 +1,4 @@
+from collections import defaultdict
 import math
 from typing import List
 
@@ -9,50 +10,46 @@ class Solution:
         and an integer target.
         Implement a function to search for target within nums. If it exists, then return its index, 
         otherwise, return -1."""
-        l, r = 0, len(nums) - 1
+        l, r = 0, len(nums)-1
         
         while l <= r:
-            m = l + ((r - l) // 2)
-            if nums[m] == target:
-                return m
-            elif nums[m] < target:
-                l = m + 1
+            mid = l + ((r - l) // 2)
+            if nums[mid] == target:
+                return mid
+            elif nums[mid] < target:
+                l = mid + 1
             else:
-                r = m - 1
-                
+                r = mid - 1
         return -1
-        
+       
     def searchMatrix(self, matrix: List[List[int]], target: int) -> bool:
         """You are given an m x n 2-D integer array matrix and an integer target.
         Each row in matrix is sorted in non-decreasing order.
         The first integer of every row is greater than the last integer of the previous row.
         Return true if target exists within matrix or false otherwise.
         Can you write a solution that runs in O(log(m * n)) time?"""
-        top, bottom = 0, len(matrix) - 1
-        l, r = 0, len(matrix[0]) - 1
+        rows = len(matrix)
+        cols = len(matrix[0])
+        top, bottom = 0, rows - 1
+        l, r = 0, cols - 1
         row = 0
-        
         while top <= bottom:
-            row = (top + bottom) // 2
-            if target < matrix[row][0]:
-                bottom = row - 1
-            elif target > matrix[row][-1]:
-                top = row + 1
-            else:
+            row = (bottom + top) // 2
+            if matrix[row][0] <= target <= matrix[row][-1]:
                 break
-            
+            if matrix[row][-1] < target:
+                top += 1
+            elif matrix[row][0] > target:
+                bottom -= 1
         while l <= r:
-            mid = (l + r) // 2
-            if target == matrix[row][mid]:
+            mid = l + (r - l) // 2
+            if matrix[row][mid] == target:
                 return True
-            elif target < matrix[row][mid]:
-                r = mid - 1
+            elif matrix[row][mid] > target:
+                r -= 1
             else:
-                l = mid + 1
-                
+                l += 1
         return False
-
-                    
 
     def minEatingSpeed(self, piles: List[int], h: int) -> int:
         """You are given an integer array piles where piles[i] is the number of bananas 
@@ -62,68 +59,64 @@ class Solution:
         pile of bananas and eats k bananas from that pile. If the pile has less than k bananas, 
         you may finish eating the pile but you can not eat from another pile in the same hour.
         Return the minimum integer k such that you can eat all the bananas within h hours."""
+        l, r = 1, max(piles)
+        res = r
         
-        l = 1
-        r = max(piles)
-        result = r
-        
+        if len(piles) == h:
+            return res
+
         while l <= r:
-            banana_time = 0
             mid = (l + r) // 2
+            totalTime = 0
             for banana in piles:
-                banana_time += banana // mid
-                if banana % mid  != 0:
-                    banana_time += 1
-            if banana_time <= h:
-                result = mid
+                totalTime += (banana + mid - 1) // mid
+            if totalTime <= h:
+                res = mid
                 r = mid - 1
             else:
                 l = mid + 1
-        return result
-
+        return res
+    
     def findMin(self, nums: List[int]) -> int:
         """You are given an array of length n which was originally sorted in ascending order. 
         It has now been rotated between 1 and n times. Assuming all elements in the rotated 
         sorted array nums are unique, return the minimum element of this array.
         A solution that runs in O(n) time is trivial, can you write an algorithm that runs in O(log n) time?"""
-        min_num = nums[0]
         l, r = 0, len(nums) - 1
+        result = nums[0]
         
         while l <= r:
-            mid = (r + l) // 2
-            if nums[mid] < min_num:
-                min_num = nums[mid]
+            mid = (l + r) // 2
+            result = min(result, nums[mid])
             if nums[mid] > nums[r]:
                 l = mid + 1
             else:
                 r = mid - 1
-                
-        return min_num
-    
-    
+        return result
+            
     def search_rotated(self, nums: List[int], target: int) -> int:
         """You are given an array of length n which was originally sorted in ascending order. 
         It has now been rotated between 1 and n times. Given the rotated sorted array nums and 
         an integer target, return the index of target within nums, or -1 if it is not present."""
+        l, r = 0, len(nums) - 1
 
-        l, r = 0, len(nums) -1
-        
         while l <= r:
-            mid = (l + r) // 2
+            mid = l + (r - l) // 2
+
             if nums[mid] == target:
                 return mid
+            
             if nums[l] <= nums[mid]:
-                if target > nums[mid] or target < nums[l]:
-                    l = mid + 1
-                else:
+                if nums[l] <= target < nums[mid]:
                     r = mid - 1
-                    
+                else:
+                    l = mid + 1
             else:
-                if target < nums[mid] or target > nums[r]:
-                    r = mid - 1
-                else:
+                if nums[mid] < target <= nums[r]:
                     l = mid + 1
-                    
+                else:
+                    r = mid - 1
+
         return -1
                     
 
@@ -133,38 +126,24 @@ class TimeMap:
     Retrieving the key's value at a specified timestamp."""
     
     def __init__(self):
-        self.store = {}
+        self.dict = defaultdict(list)
 
     def set(self, key: str, value: str, timestamp: int) -> None:
         """void set(String key, String value, int timestamp) 
         Stores the key key with the value value at the given time timestamp."""
-        
-        if key not in self.store:
-            self.store[key] = []
-        self.store[key].appened([value, timestamp])
+        self.dict[key].append([str, value])       
+      
         
     def get(self, key: str, timestamp: int) -> str:
         """String get(String key, int timestamp) Returns the most recent value of key 
         if set was previously called on it and the most recent timestamp for that key 
         prev_timestamp is less than or equal to the given timestamp (prev_timestamp <= timestamp). 
         If there are no values, it returns "". """
-        result = ""
-        values = self.store.get(key, [])
-        l, r = 0, len(values) - 1
         
-        while l <= r:
-            mid = (l + r) // 2
-            if values[mid][1] == timestamp:
-                return values[mid][0]
-            elif values[mid][1] < timestamp:
-                result = values[mid][0]
-                l = mid + 1      
-            else:
-                r = mid - 1
-                
-        return result
-
+   
+        
+        
 solution = Solution()
-matrix = [[1,2,4,8],[10,11,12,13],[14,20,30,40]]
-target = 15
-print(solution.searchMatrix(matrix, target))
+nums=[4,5,6,7,0,1,2]
+target=0
+print(solution.search_rotated(nums, target))
