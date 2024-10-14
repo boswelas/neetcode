@@ -25,19 +25,52 @@ class Solution:
             
         return prev   
             
-            
+    def mergeTwoLists(self, list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:
+        """You are given the heads of two sorted linked lists list1 and list2.
+        Merge the two lists into one sorted linked list and return the head of the new sorted linked list.
+        The new list should be made up of nodes from list1 and list2."""
+        dummy = ListNode()
+        curr = dummy
+        
+        l1_curr = list1
+        l2_curr = list2
+        
+        while l1_curr and l2_curr:
+            if l1_curr.val < l2_curr.val:
+                curr.next = l1_curr
+                l1_curr = l1_curr.next
+                curr = curr.next
+            else:
+                curr.next = l2_curr
+                l2_curr = l2_curr.next
+                curr = curr.next
+                
+        if not l1_curr:
+            curr.next = l2_curr
+        else:
+            curr.next = l1_curr
+        return dummy.next
+                
+                            
         
         
 
          
 
 solution = Solution()
-head = [0,1,2,3]
-list1 = ListNode(head[0])
+head1 = [1,2,4] 
+head2 = [1,3,5]
+list1 = ListNode(head1[0])
 current = list1
-for val in head[1:]:
+for val in head1[1:]:
     current.next = ListNode(val)
     current = current.next
-print(solution.reverseList(list1))
+    
+list2 = ListNode(head2[0])
+current = list2
+for val in head2[1:]:
+    current.next = ListNode(val)
+    current = current.next
+print(solution.mergeTwoLists(list1, list2).val)
 
 
