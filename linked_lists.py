@@ -6,6 +6,12 @@ class ListNode:
     def __init__(self, val=0, next=None):
         self.val = val
         self.next = next
+        
+class Node:
+    def __init__(self, x: int, next: 'Node' = None, random: 'Node' = None):
+        self.val = int(x)
+        self.next = next
+        self.random = random
     
 class Solution:
     
@@ -83,8 +89,7 @@ class Solution:
             right.next = temp1
             left = temp1
             right = temp2
-        
-            
+                    
     def removeNthFromEnd(self, head: Optional[ListNode], n: int) -> Optional[ListNode]:
         """You are given the beginning of a linked list head, and an integer n.
         Remove the nth node from the end of the list and return the beginning of the list."""
@@ -104,17 +109,35 @@ class Solution:
             prev.next = l.next
             return dummy.next.val
 
-         
+            
+    def copyRandomList(self, head: 'Optional[Node]') -> 'Optional[Node]':
+        nodes = {None:None}
+        
+        curr = head
+        while curr:
+            new_node = Node(curr.val)
+            nodes[curr] = new_node
+            curr = curr.next
+            
+        curr = head
+        while curr:
+            temp = nodes[curr]
+            temp.next = nodes[curr.next]
+            temp.random = nodes[curr.random]
+            curr = curr.next
+        return nodes[head]
+            
+
 
 solution = Solution()
-head = [5] 
+head = [[3, None],[7, 3],[4, 0],[5, 1]]
 n = 1
-list1 = ListNode(head[0])
+list1 = Node(head[0][0], head[0][1])
 current = list1
 for val in head[1:]:
-    current.next = ListNode(val)
+    current.next = Node(val[0], val[1])
     current = current.next
 
-print(solution.removeNthFromEnd(list1, n))
+print(solution.copyRandomList(list1))
 
 
