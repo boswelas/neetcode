@@ -85,26 +85,36 @@ class Solution:
             right = temp2
         
             
-         
-            
+    def removeNthFromEnd(self, head: Optional[ListNode], n: int) -> Optional[ListNode]:
+        """You are given the beginning of a linked list head, and an integer n.
+        Remove the nth node from the end of the list and return the beginning of the list."""
+        dummy = ListNode()
+        dummy.next = head
         
-            
+        l, r = head, dummy
         
-                
-                            
-        
-        
+        while True:
+            while n > 0:
+                r = r.next
+                n -= 1
+            while r:
+                r = r.next
+                prev = l
+                l = l.next
+            prev.next = l.next
+            return dummy.next.val
 
          
 
 solution = Solution()
-head = [2,4,6,8]
+head = [5] 
+n = 1
 list1 = ListNode(head[0])
 current = list1
 for val in head[1:]:
     current.next = ListNode(val)
     current = current.next
 
-print(solution.reorderList(list1))
+print(solution.removeNthFromEnd(list1, n))
 
 
