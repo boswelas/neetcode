@@ -1,5 +1,5 @@
 # Definition for singly-linked list.
-from typing import Optional
+from typing import List, Optional
 
 
 class ListNode:
@@ -143,8 +143,7 @@ class Solution:
             l2 = l2.next if l2 else None
             curr = curr.next
         
-        return dummy.next
-             
+        return dummy.next       
              
     def hasCycle(self, head: Optional[ListNode]) -> bool:
         if not head:
@@ -161,22 +160,40 @@ class Solution:
         
         return False
    
+    def findDuplicate(self, nums: List[int]) -> int:
+        """You are given an array of integers nums containing n + 1 integers. Each integer in nums is in the range [1, n] inclusive.
+        Every integer appears exactly once, except for one integer which appears two or more times. Return the integer that appears 
+        more than once."""
+        slow, fast = 0, 0
+        while True:
+            slow = nums[slow]
+            fast = nums[nums[fast]]
+            if slow == fast:
+                break
+
+        slow2 = 0
+        while True:
+            slow = nums[slow]
+            slow2 = nums[slow2]
+            if slow == slow2:
+                return slow
+        
+
 
 solution = Solution()
-l1=[9,9,9,9,9,9,9]
-l2=[9,9,9,9]
-list1 = ListNode(l1[0])
-current = list1
-for val in l1[1:]:
-    current.next = ListNode(val)
-    current = current.next
+nums = [1,2,3,2,2]
+# list1 = ListNode(l1[0])
+# current = list1
+# for val in l1[1:]:
+#     current.next = ListNode(val)
+#     current = current.next
     
-list2 = ListNode(l2[0])
-current = list2
-for val in l2[1:]:
-    current.next = ListNode(val)
-    current = current.next
+# list2 = ListNode(l2[0])
+# current = list2
+# for val in l2[1:]:
+#     current.next = ListNode(val)
+#     current = current.next
 
-print(solution.addTwoNumbers(list1,list2).val)
+print(solution.findDuplicate(nums))
 
 
