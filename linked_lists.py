@@ -109,7 +109,6 @@ class Solution:
             prev.next = l.next
             return dummy.next.val
 
-            
     def copyRandomList(self, head: 'Optional[Node]') -> 'Optional[Node]':
         nodes = {None:None}
         
@@ -127,17 +126,57 @@ class Solution:
             curr = curr.next
         return nodes[head]
             
-
+    def addTwoNumbers(self, l1: Optional[ListNode], l2: Optional[ListNode]) -> Optional[ListNode]:
+        dummy = ListNode()
+        curr = dummy
+        plusOne = 0
+        while l1 or l2 or plusOne:
+            val1 = l1.val if l1 else 0
+            val2 = l2.val if l2 else 0
+            temp = val1 + val2 + plusOne
+            plusOne = 0
+            if temp > 9:
+                plusOne = 1
+                temp = temp % 10           
+            curr.next = ListNode(temp)
+            l1 = l1.next if l1 else None
+            l2 = l2.next if l2 else None
+            curr = curr.next
+        
+        return dummy.next
+             
+             
+    def hasCycle(self, head: Optional[ListNode]) -> bool:
+        if not head:
+            return False
+        slow = head
+        fast = head
+        
+        while fast and fast.next:
+            if fast.next == slow:
+                return True
+            else:
+                slow = slow.next
+                fast = fast.next.next
+        
+        return False
+   
 
 solution = Solution()
-head = [[3, None],[7, 3],[4, 0],[5, 1]]
-n = 1
-list1 = Node(head[0][0], head[0][1])
+l1=[9,9,9,9,9,9,9]
+l2=[9,9,9,9]
+list1 = ListNode(l1[0])
 current = list1
-for val in head[1:]:
-    current.next = Node(val[0], val[1])
+for val in l1[1:]:
+    current.next = ListNode(val)
+    current = current.next
+    
+list2 = ListNode(l2[0])
+current = list2
+for val in l2[1:]:
+    current.next = ListNode(val)
     current = current.next
 
-print(solution.copyRandomList(list1))
+print(solution.addTwoNumbers(list1,list2).val)
 
 
