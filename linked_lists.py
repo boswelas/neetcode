@@ -178,10 +178,42 @@ class Solution:
             if slow == slow2:
                 return slow
         
+class LRUCache:
 
+    def __init__(self, capacity: int):
+        self.size = capacity
+        self.keys = []
+        self.store = {}
+        
+    def get(self, key: int) -> int:
+        if key in self.keys:
+            self.keys.append(self.keys.pop(self.keys.index(key)))
+        return self.store.get(key, -1)
 
-solution = Solution()
-nums = [1,2,3,2,2]
+    def put(self, key: int, value: int) -> None:
+        if key in self.store:
+            self.store[key] = value
+        else:
+            if len(self.keys) == self.size:
+                del self.store[self.keys[0]]
+                self.keys.pop(0)
+            self.store[key] = value
+            self.keys.append(key)
+                
+        
+
+lRUCache = LRUCache(2)
+print(lRUCache.put(1, 1));  # cache: {1=10}
+print(lRUCache.put(2, 2));  # cache: {1=10}
+print(lRUCache.get(1));      # return 10
+print(lRUCache.put(3, 3));  # cache: {1=10}
+print(lRUCache.put(2, 20));  # cache: {1=10, 2=20}
+print(lRUCache.put(3, 30));  # cache: {2=20, 3=30}, key=1 was evicted
+print(lRUCache.get(2));      # returns 20 
+print(lRUCache.get(1));      # return -1 (not found)
+
+# solution = Solution()
+# nums = [1,2,3,2,2]
 # list1 = ListNode(l1[0])
 # current = list1
 # for val in l1[1:]:
@@ -194,6 +226,6 @@ nums = [1,2,3,2,2]
 #     current.next = ListNode(val)
 #     current = current.next
 
-print(solution.findDuplicate(nums))
+# print(solution.findDuplicate(nums))
 
 
