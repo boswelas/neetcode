@@ -32,6 +32,19 @@ class Solution:
                 stack.append([node.right, depth + 1])
         return result
 
+    def diameterOfBinaryTree(self, root: Optional[TreeNode]) -> int:
+        self.result = 0
+        
+        def dfs(curr):
+            if not curr:
+                return 0
+            left = dfs(curr.left)
+            right = dfs(curr.right)
+            self.result = max(self.result, left + right)
+            return 1 + max(left, right)
+        dfs(root)
+        return self.result
+
 solution = Solution()    
 root_values = [3,9,20,None,None,15,7]
 root = TreeNode(root_values[0])
