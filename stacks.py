@@ -72,26 +72,25 @@ class Solution:
     def generateParenthesis(self, n: int) -> List[str]:
         """You are given an integer n. Return all well-formed parentheses strings 
         that you can generate with n pairs of parentheses. 1 <= n <= 7"""      
-        stack = []
         result = []
+        stack = []
         
-        def backtrack(openN, closedN):
-            if openN == closedN == n:
+        def backtrack(openP, closedP):
+            if openP == closedP == n:
                 result.append("".join(stack))
                 return
-            
-            if openN < n:
+            if openP < n:
                 stack.append("(")
-                backtrack(openN + 1, closedN)
+                backtrack(openP + 1, closedP)
                 stack.pop()
-                
-            if closedN < openN:
+            if closedP < openP:
                 stack.append(")")
-                backtrack(openN, closedN + 1)
+                backtrack(openP, closedP + 1)
                 stack.pop()
                 
-        backtrack(0,0)
+        backtrack(0, 0)
         return result
+        
     
     def dailyTemperatures(self, temperatures: List[int]) -> List[int]:
         """You are given an array of integers temperatures where temperatures[i] 
@@ -136,7 +135,5 @@ class Solution:
         
        
 solution = Solution()
-target=10
-position=[4,1,0,7]
-speed=[2,2,1,1]
-print(solution.carFleet(target, position, speed))
+n = 3
+print(solution.generateParenthesis(n))

@@ -45,30 +45,26 @@ class Solution:
         and the indices i, j and k are all distinct.
         The output should not contain any duplicate triplets. 
         You may return the output and the triplets in any order."""
+        triplets = set()
         nums.sort()
-        vals = set()
-        
         for i in range(0, len(nums)-2):
+            j = i+1
+            k = len(nums) - 1
             if i > 0 and nums[i] == nums[i - 1]:
                 continue
-            
-            if nums[i] > 0:
-                break
-            
-            j, k = i + 1, len(nums) - 1
-            
-            while j < k:
+            while j < k: 
                 temp = nums[i] + nums[j] + nums[k]
                 if temp == 0:
-                    vals.add((nums[i], nums[j], nums[k]))
+                    triplets.add((nums[i], nums[j], nums[k]))
                     j += 1
                     k -= 1
-                elif temp < 0:
-                    j += 1
+                elif temp > 0:
+                    k -= 1
                 else:
-                    k -= 1
-        return [list(v) for v in vals]
-        
+                    j += 1
+            i += 1
+        return [list(val) for val in triplets]
+
     def maxArea(self, height: List[int]) -> int:
         """You are given an integer array heights where heights[i] represents 
         the height of the ith bar.
@@ -124,5 +120,5 @@ class Solution:
         
     
 solution = Solution()
-nums=[0,0,0,0]
+nums = [-1,0,1,2,-1,-4]
 print(solution.threeSum(nums))

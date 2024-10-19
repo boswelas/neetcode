@@ -142,18 +142,19 @@ class Solution:
         sequence of elements.
         A consecutive sequence is a sequence of elements in which each element is exactly 
         1 greater than the previous element.
-        You must write an algorithm that runs in O(n) time."""
+        You must write an algorithm that runs in O(n) time."""      
         numSet = set(nums)
         result = 0
         
         for num in numSet:
             if num - 1 not in numSet:
-                count = 1
-                while num + count in numSet:
-                    count += 1
-                result = max(result, count)
+                temp = 1
+                while num + temp in numSet:
+                    temp += 1
+                result = max(temp, result)
         return result
-        
+            
+   
     def fourSumCount(self, nums1: List[int], nums2: List[int], nums3: List[int], nums4: List[int]) -> int:
         """Given four integer arrays nums1, nums2, nums3, and nums4 all of length n, return the number of tuples (i, j, k, l) such that:
         0 <= i, j, k, l < n
@@ -172,5 +173,5 @@ class Solution:
         
     
 solution = Solution()
-nums = [100,4,200,1,3,2]
+nums = [2,20,4,10,3,4,5]
 print(solution.longestConsecutive(nums))
