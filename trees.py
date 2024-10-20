@@ -45,8 +45,30 @@ class Solution:
         dfs(root)
         return self.result
 
+    def isBalanced(self, root: Optional[TreeNode]) -> bool:
+        balanced = [True]
+        
+        def height(root):
+            if not root:
+                return 0
+            
+            left_height = height(root.left)
+            if balanced[0] is False:
+                return 0
+            
+            right_height = height(root.right)
+            
+            if abs(left_height - right_height) > 1:
+                balanced[0] = False
+                return 0
+            
+            return 1 + max(left_height, right_height)
+        
+        height(root)
+        return balanced[0]
+
 solution = Solution()    
-root_values = [3,9,20,None,None,15,7]
+root_values = [1,2,3,None,None,4]
 root = TreeNode(root_values[0])
 queue = [root]
 i = 1
@@ -66,4 +88,4 @@ while i < len(root_values):
         current_node.right = TreeNode(root_values[i])
         queue.append(current_node.right)
     i += 1
-print(solution.maxDepth(root))
+print(solution.isBalanced(root))
