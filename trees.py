@@ -18,19 +18,22 @@ class Solution:
         self.invertTree(root.right)
         return root
          
-       
     def maxDepth(self, root: Optional[TreeNode]) -> int:
-        stack = [root, 1]
+        """Given the root of a binary tree, return its depth. The depth of a binary tree is defined as 
+        the number of nodes along the longest path from the root node down to the farthest leaf node."""
         result = 0
+        stack = [[root, 1]]
         
         while stack:
-            node, depth = stack.pop()
-            if node:
+            root, depth = stack.pop()
+            
+            if root:
                 result = max(result, depth)
-                stack.append([node.left, depth + 1])
-                stack.append([node.right, depth + 1])
+                stack.append([root.left, depth + 1])
+                stack.append([root.right, depth + 1])
+                
         return result
-
+        
     def diameterOfBinaryTree(self, root: Optional[TreeNode]) -> int:
         self.result = 0
         
@@ -152,4 +155,4 @@ while i < len(root_values):
         current_node.right = TreeNode(root_values[i])
         queue.append(current_node.right)
     i += 1
-print(solution.isBalanced(root))
+print(solution.maxDepth(root))
