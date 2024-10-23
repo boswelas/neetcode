@@ -35,17 +35,25 @@ class Solution:
         return result
         
     def diameterOfBinaryTree(self, root: Optional[TreeNode]) -> int:
-        self.result = 0
+        """The diameter of a binary tree is defined as the length of the longest path between any two nodes within the tree. 
+        The path does not necessarily have to pass through the root.
+        The length of a path between two nodes in a binary tree is the number of edges between the nodes.
+        Given the root of a binary tree root, return the diameter of the tree."""
+        result = [0]
         
-        def dfs(curr):
-            if not curr:
+        def dfs(root):
+            if root is None:
                 return 0
-            left = dfs(curr.left)
-            right = dfs(curr.right)
-            self.result = max(self.result, left + right)
-            return 1 + max(left, right)
+            
+            leftHeight = dfs(root.left)
+            rightHeight = dfs(root.right)
+            result[0] = max(result[0], leftHeight + rightHeight)
+            
+            return 1 + max(leftHeight, rightHeight)
+        
         dfs(root)
-        return self.result
+        return result[0]    
+        
 
     def isBalanced(self, root: Optional[TreeNode]) -> bool:
         balanced = [True]
@@ -135,7 +143,7 @@ class Solution:
             
 
 solution = Solution()    
-root_values = [1,2,3,None,None,4]
+root_values = [1,None,2,3,4,5]
 root = TreeNode(root_values[0])
 queue = [root]
 i = 1
@@ -155,4 +163,4 @@ while i < len(root_values):
         current_node.right = TreeNode(root_values[i])
         queue.append(current_node.right)
     i += 1
-print(solution.maxDepth(root))
+print(solution.diameterOfBinaryTree(root))
