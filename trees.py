@@ -74,13 +74,13 @@ class Solution:
         
         dfs(root)
         return result[0]
-            
-            
-        
-        
+                   
     def isSameTree(self, p: Optional[TreeNode], q: Optional[TreeNode]) -> bool:
+        """Given the roots of two binary trees p and q, return true if the trees are equivalent, otherwise return false.
+        Two binary trees are considered equivalent if they share the exact same structure and the nodes have the same values."""
         
-        def dfs(p, q):
+        def isSame(p, q):
+            
             if not p and not q:
                 return True
             
@@ -90,8 +90,12 @@ class Solution:
             if p.val != q.val:
                 return False
             
-            return dfs(p.left, q.left) and dfs(p.right, q.right)
-        return dfs(p, q)
+            return isSame(p.left, q.left) and isSame(p.right, q.right)
+        
+        return isSame(p, q)
+            
+            
+
 
     def isSubtree(self, root: Optional[TreeNode], subRoot: Optional[TreeNode]) -> bool:
         
