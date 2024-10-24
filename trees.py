@@ -80,7 +80,6 @@ class Solution:
         Two binary trees are considered equivalent if they share the exact same structure and the nodes have the same values."""
         
         def isSame(p, q):
-            
             if not p and not q:
                 return True
             
@@ -94,61 +93,59 @@ class Solution:
         
         return isSame(p, q)
             
-            
-
-
     def isSubtree(self, root: Optional[TreeNode], subRoot: Optional[TreeNode]) -> bool:
-        
-        def sameTree(p, q):
-            if not p and not q:
+        """Given the roots of two binary trees root and subRoot, return true if there is a subtree of root with the same structure 
+        and node values of subRoot and false otherwise.
+        A subtree of a binary tree tree is a tree that consists of a node in tree and all of this node's descendants. 
+        The tree tree could also be considered as a subtree of itself."""
+
+        def isSame(root, subRoot):
+            if not root and not subRoot:
                 return True
             
-            if (p and not q) or (q and not p):
+            if (root and not subRoot) or (subRoot and not root):
                 return False
             
-            
-            if p.val != q.val:
+            if root.val != subRoot.val:
                 return False
             
-            return sameTree(p.left, q.left) and sameTree(p.right, q.right)
+            return isSame(root.left, subRoot.left) and isSame(root.right, subRoot.right)
         
-        def has_subtree(root):
+        def hasSub(root):
             if not root:
                 return False
             
-            if sameTree(root, subRoot):
+            if isSame(root, subRoot):
                 return True
             
-            return has_subtree(root.left) or has_subtree(root.right)
+            return hasSub(root.left) or hasSub(root.right)
         
-        return has_subtree(root)
-
+        return hasSub(root)
+        
     def lowestCommonAncestor(self, root: TreeNode, p: TreeNode, q: TreeNode) -> TreeNode:
-        lca = [root]
+        result = [root]
         
-        def search(root):
-            if not root: 
+        def dfs(root):
+            if not root:
                 return
             
-            lca[0] = root
-            
+            result.append(root)
             if root is p or root is q:
                 return
-            
             elif root.val < p.val and root.val < q.val:
-                search(root.right)
+                dfs(root.right)
             elif root.val > p.val and root.val > q.val:
-                search(root.left)
+                dfs(root.left)
             else:
                 return
             
-        search(root)
-        return lca[0]
-            
-            
+        dfs(root)
+        return result[-1]
 
 solution = Solution()    
-root_values = []
+root_values = [5,3,8,1,4,7,9,None,2] 
+p = 3 
+q = 4
 root = TreeNode(root_values[0])
 queue = [root]
 i = 1
@@ -168,4 +165,4 @@ while i < len(root_values):
         current_node.right = TreeNode(root_values[i])
         queue.append(current_node.right)
     i += 1
-print(solution.isBalanced(root))
+print(solution.lowestCommonAncestor(root, p, q))
