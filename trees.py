@@ -1,4 +1,5 @@
-from typing import Optional
+from collections import deque
+from typing import List, Optional
 
 
 class TreeNode:
@@ -142,10 +143,58 @@ class Solution:
         dfs(root)
         return result[-1]
 
+    def levelOrder(self, root: Optional[TreeNode]) -> List[List[int]]:
+        """Given a binary tree root, return the level order traversal of it as a nested list, 
+        where each sublist contains the values of nodes at a particular level in the tree, from left to right."""
+        if root is None:
+            return []
+        
+        queue = deque()
+        queue.append(root)
+        result = []
+        
+        while queue:
+            temp = []
+            n = len(queue)
+            
+            for i in range(n):
+                node = queue.popleft()
+                temp.append(node.val)
+                if node.left:
+                    queue.append(node.left)
+                if node.right:
+                    queue.append(node.right)
+            result.append(temp)
+        return result
+
+    def rightSideView(self, root: Optional[TreeNode]) -> List[int]:
+        """You are given the root of a binary tree. Return only the values of the nodes that are visible from the right side 
+        of the tree, ordered from top to bottom."""
+        if root is None:
+            return []
+        
+        result = []
+        queue = deque()
+        queue.append(root)
+        
+        while queue:
+            n = len(queue)
+            temp = []
+            
+            for i in range(n):
+                node = queue.popleft()
+                if node:
+                    temp.append(node.val)
+                if node.left:
+                    queue.append(node.left)
+                if node.right:
+                    queue.append(node.right)
+            result.append(temp[-1])
+        return result
+        
+
 solution = Solution()    
-root_values = [5,3,8,1,4,7,9,None,2] 
-p = 3 
-q = 4
+root_values = [1,2,3,4,5,6,7]
 root = TreeNode(root_values[0])
 queue = [root]
 i = 1
@@ -165,4 +214,4 @@ while i < len(root_values):
         current_node.right = TreeNode(root_values[i])
         queue.append(current_node.right)
     i += 1
-print(solution.lowestCommonAncestor(root, p, q))
+print(solution.rightSideView(root))
