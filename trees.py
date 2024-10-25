@@ -192,9 +192,32 @@ class Solution:
             result.append(temp[-1])
         return result
         
+    def goodNodes(self, root: TreeNode) -> int:
+        """Within a binary tree, a node x is considered good if the path from the root of the tree to the node x 
+        contains no nodes with a value greater than the value of node x.
+        Given the root of a binary tree root, return the number of good nodes within the tree."""
+        if root is None:
+            return 0
+        
+        result = [0]
+        tempMax = root.val
+               
+        def dfs(root, maxNum):
+            if root is None:
+                return
+            
+            if root.val >= maxNum:
+                result[0] += 1
+                maxNum = max(maxNum, root.val)
+                
+            dfs(root.left, maxNum)
+            dfs(root.right, maxNum)
+        
+        dfs(root, tempMax)
+        return result[0]
 
 solution = Solution()    
-root_values = [1,2,3,4,5,6,7]
+root_values = [1]
 root = TreeNode(root_values[0])
 queue = [root]
 i = 1
@@ -214,4 +237,4 @@ while i < len(root_values):
         current_node.right = TreeNode(root_values[i])
         queue.append(current_node.right)
     i += 1
-print(solution.rightSideView(root))
+print(solution.goodNodes(root))
