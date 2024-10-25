@@ -1,3 +1,4 @@
+from cmath import inf
 from collections import deque
 from typing import List, Optional
 
@@ -216,8 +217,23 @@ class Solution:
         dfs(root, tempMax)
         return result[0]
 
+    def isValidBST(self, root: Optional[TreeNode]) -> bool:
+        """Given the root of a binary tree, return true if it is a valid binary search tree, otherwise return false."""
+        def valid_tree(node, minNum, maxNum):
+            if not node:
+                return True
+            
+            if not minNum < node.val < maxNum:
+                return False
+            
+            return valid_tree(node.left, minNum, node.val) and valid_tree(node.right, node.val, maxNum)
+        
+        return valid_tree(root, -inf, inf)
+       
+            
+
 solution = Solution()    
-root_values = [1]
+root_values = [2,1,3]
 root = TreeNode(root_values[0])
 queue = [root]
 i = 1
@@ -237,4 +253,4 @@ while i < len(root_values):
         current_node.right = TreeNode(root_values[i])
         queue.append(current_node.right)
     i += 1
-print(solution.goodNodes(root))
+print(solution.isValidBST(root))
