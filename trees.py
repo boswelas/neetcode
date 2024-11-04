@@ -174,17 +174,16 @@ class Solution:
         queue.append(root)
         
         while queue:
-            n = len(queue)
+            count = len(queue)
             temp = []
-            
-            for i in range(n):
-                node = queue.popleft()
-                if node:
-                    temp.append(node.val)
-                if node.left:
-                    queue.append(node.left)
-                if node.right:
-                    queue.append(node.right)
+            for i in range(count):
+                val = queue.popleft()
+                if val:
+                    temp.append(val.val)
+                if val.left:
+                    queue.append(val.left)
+                if val.right:
+                    queue.append(val.right)
             result.append(temp[-1])
         return result
         
@@ -195,23 +194,24 @@ class Solution:
         if root is None:
             return 0
         
-        result = [0]
-        tempMax = root.val
-               
-        def dfs(root, maxNum):
-            if root is None:
-                return
-            
-            if root.val >= maxNum:
-                result[0] += 1
-                maxNum = max(maxNum, root.val)
-                
-            dfs(root.left, maxNum)
-            dfs(root.right, maxNum)
+        result = 0
+        stack = [[root, root.val]]
         
-        dfs(root, tempMax)
-        return result[0]
-
+        while stack:
+            node, currmax = stack.pop()
+            
+            if node:
+                if node.val >= currmax:
+                    result += 1
+                if node.val > currmax:
+                    currmax = node.val
+                    
+                if node.left:
+                    stack.append([node.left, currmax])
+                if node.right:
+                    stack.append([node.right, currmax])            
+        return result
+        
     def isValidBST(self, root: Optional[TreeNode]) -> bool:
         """Given the root of a binary tree, return true if it is a valid binary search tree, otherwise return false."""
         def valid_tree(node, minNum, maxNum):
@@ -243,7 +243,7 @@ class Solution:
 
 solution = Solution()    
 
-root_values = [1,2,3,4,5,6,7]
+root_values = [2,None,4,10,8,None,None,4]
 root = TreeNode(root_values[0])
 queue = [root]
 i = 1
@@ -264,4 +264,4 @@ while i < len(root_values):
         queue.append(current_node.right)
     i += 1
     
-print(solution.levelOrder(root))
+print(solution.goodNodes(root))
