@@ -12,14 +12,14 @@ class TreeNode:
 class Solution:
     def invertTree(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
         """You are given the root of a binary tree root. Invert the binary tree and return its root."""
-        if not root:
-            return 
+        if root is None:
+            return
         
         root.left, root.right = root.right, root.left
-        self.invertTree(root.left)  
+        self.invertTree(root.left) 
         self.invertTree(root.right)
         return root
-         
+                    
     def maxDepth(self, root: Optional[TreeNode]) -> int:
         """Given the root of a binary tree, return its depth. The depth of a binary tree is defined as 
         the number of nodes along the longest path from the root node down to the farthest leaf node."""
@@ -29,13 +29,12 @@ class Solution:
         while stack:
             root, depth = stack.pop()
             
-            if root:
+            if root: 
                 result = max(result, depth)
                 stack.append([root.left, depth + 1])
                 stack.append([root.right, depth + 1])
-                
         return result
-        
+            
     def diameterOfBinaryTree(self, root: Optional[TreeNode]) -> int:
         """The diameter of a binary tree is defined as the length of the longest path between any two nodes within the tree. 
         The path does not necessarily have to pass through the root.
@@ -44,17 +43,19 @@ class Solution:
         result = [0]
         
         def dfs(root):
+            
             if root is None:
                 return 0
             
-            leftHeight = dfs(root.left)
-            rightHeight = dfs(root.right)
-            result[0] = max(result[0], leftHeight + rightHeight)
+            l_height = dfs(root.left)
+            r_height = dfs(root.right)
             
-            return 1 + max(leftHeight, rightHeight)
-        
+            curr = l_height + r_height
+            result[0] = max(result[0], curr)
+            
+            return 1 + max(l_height, r_height)
         dfs(root)
-        return result[0]    
+        return result[0]
         
     def isBalanced(self, root: Optional[TreeNode]) -> bool:
         """Given a binary tree, return true if it is height-balanced and false otherwise.
@@ -230,10 +231,25 @@ class Solution:
         
         return valid_tree(root, -inf, inf)
        
-            
+    def kthSmallest(self, root: Optional[TreeNode], k: int) -> int:
+        stack = []
+        curr = root
+
+        while stack or curr:
+            while curr:
+                stack.append(curr)
+                curr = curr.left
+            curr = stack.pop()
+            k -= 1
+            if k == 0:
+                return curr.val
+            curr = curr.right
+        
+
 
 solution = Solution()    
-root_values = [2,1,3]
+root_values = [1,2,3,4,5]
+k = 1
 root = TreeNode(root_values[0])
 queue = [root]
 i = 1
@@ -253,4 +269,4 @@ while i < len(root_values):
         current_node.right = TreeNode(root_values[i])
         queue.append(current_node.right)
     i += 1
-print(solution.isValidBST(root))
+print(solution.diameterOfBinaryTree(root))
