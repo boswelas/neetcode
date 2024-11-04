@@ -76,9 +76,7 @@ class Solution:
             
         dfs(root)
         return result[0] < 2
-                
-        
-                   
+                     
     def isSameTree(self, p: Optional[TreeNode], q: Optional[TreeNode]) -> bool:
         """Given the roots of two binary trees p and q, return true if the trees are equivalent, otherwise return false.
         Two binary trees are considered equivalent if they share the exact same structure and the nodes have the same values."""
@@ -90,13 +88,12 @@ class Solution:
             if (p and not q) or (q and not p):
                 return False
             
-            if p.val != q.val:
+            if p.val == q.val:
+                return isSame(p.left, q.left) and isSame(p.right, q.right)
+            else:
                 return False
-            
-            return isSame(p.left, q.left) and isSame(p.right, q.right)
-        
         return isSame(p, q)
-            
+              
     def isSubtree(self, root: Optional[TreeNode], subRoot: Optional[TreeNode]) -> bool:
         """Given the roots of two binary trees root and subRoot, return true if there is a subtree of root with the same structure 
         and node values of subRoot and false otherwise.
@@ -115,17 +112,17 @@ class Solution:
             
             return isSame(root.left, subRoot.left) and isSame(root.right, subRoot.right)
         
-        def hasSub(root):
+        def findSubTree(root):
             if not root:
                 return False
             
             if isSame(root, subRoot):
                 return True
             
-            return hasSub(root.left) or hasSub(root.right)
-        
-        return hasSub(root)
-        
+            return findSubTree(root.left) or findSubTree(root.right)
+            
+        return findSubTree(root)
+            
     def lowestCommonAncestor(self, root: TreeNode, p: TreeNode, q: TreeNode) -> TreeNode:
         result = [root]
         
@@ -249,8 +246,9 @@ class Solution:
 
 
 solution = Solution()    
-root_values = [1,2,3,None,None,4]
-k = 1
+
+root_values = [1,2,3,4,5]
+subRoot_values = [2,4,5]
 root = TreeNode(root_values[0])
 queue = [root]
 i = 1
@@ -270,4 +268,26 @@ while i < len(root_values):
         current_node.right = TreeNode(root_values[i])
         queue.append(current_node.right)
     i += 1
-print(solution.isBalanced(root))
+    
+    
+subRoot_values = [2,4,5]
+subRoot = TreeNode(subRoot_values[0])
+queue = [root]
+i = 1
+
+# Iterate over the list to assign children nodes
+while i < len(subRoot_values):
+    current_node = queue.pop(0)
+    
+    # Assign the left child if it's not None
+    if subRoot_values[i] is not None:
+        current_node.left = TreeNode(subRoot_values[i])
+        queue.append(current_node.left)
+    i += 1
+
+    # Check if there's a right child and we don't go out of bounds
+    if i < len(subRoot_values) and subRoot_values[i] is not None:
+        current_node.right = TreeNode(subRoot_values[i])
+        queue.append(current_node.right)
+    i += 1
+print(solution.isSubtree(root, subRoot))
