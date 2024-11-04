@@ -61,22 +61,23 @@ class Solution:
         """Given a binary tree, return true if it is height-balanced and false otherwise.
         A height-balanced binary tree is defined as a binary tree in which the left and right subtrees 
         of every node differ in height by no more than 1."""
-        result = [True]
+        result = [0]
         
         def dfs(root):
             if root is None:
                 return 0
             
-            leftHeight = dfs(root.left)
-            rightHeight = dfs(root.right)
+            l_height = dfs(root.left)
+            r_height = dfs(root.right)
             
-            if abs(leftHeight - rightHeight) > 1:
-                result[0] = False
+            result[0] = max(result[0], abs(l_height - r_height))
             
-            return 1 + max(leftHeight, rightHeight)
-        
+            return 1 + max(l_height, r_height)            
+            
         dfs(root)
-        return result[0]
+        return result[0] < 2
+                
+        
                    
     def isSameTree(self, p: Optional[TreeNode], q: Optional[TreeNode]) -> bool:
         """Given the roots of two binary trees p and q, return true if the trees are equivalent, otherwise return false.
@@ -248,7 +249,7 @@ class Solution:
 
 
 solution = Solution()    
-root_values = [1,2,3,4,5]
+root_values = [1,2,3,None,None,4]
 k = 1
 root = TreeNode(root_values[0])
 queue = [root]
@@ -269,4 +270,4 @@ while i < len(root_values):
         current_node.right = TreeNode(root_values[i])
         queue.append(current_node.right)
     i += 1
-print(solution.diameterOfBinaryTree(root))
+print(solution.isBalanced(root))
