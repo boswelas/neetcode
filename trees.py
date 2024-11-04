@@ -127,46 +127,42 @@ class Solution:
         result = [root]
         
         def dfs(root):
-            if not root:
+            if root is None:
                 return
             
             result.append(root)
-            if root is p or root is q:
-                return
-            elif root.val < p.val and root.val < q.val:
+            
+            if root.val < p.val and root.val < q.val:
                 dfs(root.right)
             elif root.val > p.val and root.val > q.val:
                 dfs(root.left)
             else:
                 return
-            
         dfs(root)
         return result[-1]
-
+                
     def levelOrder(self, root: Optional[TreeNode]) -> List[List[int]]:
         """Given a binary tree root, return the level order traversal of it as a nested list, 
         where each sublist contains the values of nodes at a particular level in the tree, from left to right."""
-        if root is None:
-            return []
-        
         queue = deque()
         queue.append(root)
         result = []
         
         while queue:
-            temp = []
-            n = len(queue)
             
-            for i in range(n):
-                node = queue.popleft()
-                temp.append(node.val)
-                if node.left:
-                    queue.append(node.left)
-                if node.right:
-                    queue.append(node.right)
+            count = len(queue)
+            temp = []
+            for i in range(count):
+                if queue:
+                    val = queue.popleft()
+                    
+                    if val:
+                        temp.append(val.val)
+                        queue.append(val.left)
+                        queue.append(val.right)
             result.append(temp)
-        return result
-
+        return result[:-1]
+                    
     def rightSideView(self, root: Optional[TreeNode]) -> List[int]:
         """You are given the root of a binary tree. Return only the values of the nodes that are visible from the right side 
         of the tree, ordered from top to bottom."""
@@ -247,8 +243,7 @@ class Solution:
 
 solution = Solution()    
 
-root_values = [1,2,3,4,5]
-subRoot_values = [2,4,5]
+root_values = [1,2,3,4,5,6,7]
 root = TreeNode(root_values[0])
 queue = [root]
 i = 1
@@ -269,25 +264,4 @@ while i < len(root_values):
         queue.append(current_node.right)
     i += 1
     
-    
-subRoot_values = [2,4,5]
-subRoot = TreeNode(subRoot_values[0])
-queue = [root]
-i = 1
-
-# Iterate over the list to assign children nodes
-while i < len(subRoot_values):
-    current_node = queue.pop(0)
-    
-    # Assign the left child if it's not None
-    if subRoot_values[i] is not None:
-        current_node.left = TreeNode(subRoot_values[i])
-        queue.append(current_node.left)
-    i += 1
-
-    # Check if there's a right child and we don't go out of bounds
-    if i < len(subRoot_values) and subRoot_values[i] is not None:
-        current_node.right = TreeNode(subRoot_values[i])
-        queue.append(current_node.right)
-    i += 1
-print(solution.isSubtree(root, subRoot))
+print(solution.levelOrder(root))
