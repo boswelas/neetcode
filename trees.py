@@ -214,22 +214,20 @@ class Solution:
         
     def isValidBST(self, root: Optional[TreeNode]) -> bool:
         """Given the root of a binary tree, return true if it is a valid binary search tree, otherwise return false."""
-        def valid_tree(node, minNum, maxNum):
-            if not node:
+        def isValid(root, minVal, maxVal):
+            if root is None:
                 return True
-            
-            if not minNum < node.val < maxNum:
+            if minVal < root.val < maxVal:
+                return isValid(root.left, minVal, root.val) and isValid(root.right, root.val, maxVal)
+            else:
                 return False
-            
-            return valid_tree(node.left, minNum, node.val) and valid_tree(node.right, node.val, maxNum)
-        
-        return valid_tree(root, -inf, inf)
+        return isValid(root, -inf, inf)
        
     def kthSmallest(self, root: Optional[TreeNode], k: int) -> int:
         stack = []
         curr = root
-
-        while stack or curr:
+        
+        while curr or stack:
             while curr:
                 stack.append(curr)
                 curr = curr.left
@@ -238,12 +236,14 @@ class Solution:
             if k == 0:
                 return curr.val
             curr = curr.right
+                
         
 
 
 solution = Solution()    
 
-root_values = [2,None,4,10,8,None,None,4]
+root_values = [5,3,6,2,4,None,None,1] 
+k = 6
 root = TreeNode(root_values[0])
 queue = [root]
 i = 1
@@ -264,4 +264,4 @@ while i < len(root_values):
         queue.append(current_node.right)
     i += 1
     
-print(solution.goodNodes(root))
+print(solution.kthSmallest(root, k))
