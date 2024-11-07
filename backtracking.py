@@ -8,31 +8,27 @@ class Solution:
         
         def backtrack(i):
             if i == n:
-                res.append(sol[:])
+                res.append(sol.copy())
                 return
             
+            #don't include
             backtrack(i + 1)
             
+            #include
             sol.append(nums[i])
             backtrack(i + 1)
             sol.pop()
-            
         backtrack(0)
         return res
     
     def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
-        """You are given an array of distinct integers nums and a target integer target. 
-        Your task is to return a list of all unique combinations of nums where the chosen numbers sum to target.
-        The same number may be chosen from nums an unlimited number of times. 
-        Two combinations are the same if the frequency of each of the chosen numbers is the same, otherwise they are different.
-        You may return the combinations in any order and the order of the numbers in each combination can be in any order."""
         res = []
-        
+       
         def backtrack(i, curr, total):
             if total == target:
-                res.append(curr[:])
-                return
-            
+               res.append(curr.copy())
+               return
+               
             if i >= len(candidates) or total > target:
                 return
             
@@ -48,16 +44,13 @@ class Solution:
         return res
     
     def permute(self, nums: List[int]) -> List[List[int]]:
-        """Given an array nums of unique integers, return all the possible permutations. 
-        You may return the answer in any order."""
         res, sol = [], []
         n = len(nums)
         
         def backtrack():
             if len(sol) == n:
-                res.append(sol[:])
-                return
-            
+                res.append(sol.copy())
+                
             for num in nums:
                 if num not in sol:
                     sol.append(num)
@@ -66,8 +59,58 @@ class Solution:
         backtrack()
         return res
         
-    
+    def subsetsWithDup(self, nums: List[int]) -> List[List[int]]:
+        """You are given an array nums of integers, which may contain duplicates. Return all possible subsets.
+        The solution must not contain duplicate subsets. You may return the solution in any order."""
+        res = set()
+        sol = []
+        n = len(nums)
+        
+        def backtrack(i):
+            if i == n:
+                res.add(tuple(sol))
+                return
+            
+            # don't include
+            backtrack(i + 1)
+            
+            #include
+            sol.append(nums[i])
+            backtrack(i + 1)
+            sol.pop()
+            
+        nums.sort()
+        backtrack(0)
+        return [list(val) for val in res]
+                
+    def combinationSum2(self, candidates: List[int], target: int) -> List[List[int]]:
+        """You are given an array of integers candidates, which may contain duplicates, and a target integer target. 
+        Your task is to return a list of all unique combinations of candidates where the chosen numbers sum to target.
+        Each element from candidates may be chosen at most once within a combination. The solution set must not contain duplicate combinations.
+        You may return the combinations in any order and the order of the numbers in each combination can be in any order."""
+        res = []
+        candidates.sort()
+        
+        def backtrack(i, curr, total):
+            if total == target:
+                res.append(curr.copy())
+                return
+            
+            for j in range(i, len(candidates)):
+                if j > i and candidates[i] == candidates[i - 1]:
+                    continue
+                if total + candidates[i] > target:
+                    break
+                
+                curr.append(candidates[i])
+                backtrack(i + 1, curr, total + candidates[i])
+                curr.pop()
+            
+        backtrack(0, [], 0) 
+        return res
+
     
 solution = Solution()
-nums = [1,2,3]
-print(solution.permute(nums))
+candidates = [10,1,2,7,6,1,5] 
+target = 8
+print(solution.combinationSum2(candidates, target))
