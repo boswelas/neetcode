@@ -109,8 +109,36 @@ class Solution:
         backtrack(0, [], 0) 
         return res
 
+    def exist(self, board: List[List[str]], word: str) -> bool:
+        """Given a 2-D grid of characters board and a string word, return true if the word is present in the grid, otherwise return false.
+        For the word to be present it must be possible to form it with a path in the board with horizontally or vertically neighboring cells. 
+        The same cell may not be used more than once in a word."""
+        ROWS, COLS = len(board), len(board[0])
+        curr = set()
+        
+        def backtrack(r, c, i):
+            if i == len(word):
+                return True
+            if r < 0 or c < 0 or r >= ROWS or c >= COLS or word[i] != board[r][c] or (r, c) in curr:
+                return False
+            
+            curr.add((r, c))
+            res = (backtrack(r + 1, c, i + 1) or
+            backtrack(r - 1, c, i + 1) or
+            backtrack(r, c + 1, i + 1) or
+            backtrack(r, c - 1, i + 1))
+            
+            curr.remove((r,c))
+            return res
+        for r in range(ROWS):
+            for c in range(COLS):
+                if backtrack(r, c, 0): return True
+        return False
+            
+    def partition(self, s: str) -> List[List[str]]:
+        """Given a string s, split s into substrings where every substring is a palindrome. Return all possible lists of palindromic substrings.
+        You may return the solution in any order."""
     
 solution = Solution()
-candidates = [10,1,2,7,6,1,5] 
-target = 8
-print(solution.combinationSum2(candidates, target))
+s = "aab"
+print(solution.partition(s))
