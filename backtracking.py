@@ -150,12 +150,12 @@ class Solution:
                 return
             
             for j in range(i, len(s)):
-                if isPalindrome(s, i, j):
+                if isPalindrome(i, j):
                     sol.append(s[i:j+1])
                     backtrack(j + 1)
                     sol.pop()
-                    
-        def isPalindrome(s, l, r):
+            
+        def isPalindrome(l, r):
             while l < r:
                 if s[l] == s[r]:
                     l += 1
@@ -163,33 +163,31 @@ class Solution:
                 else:
                     return False
             return True
-        
         backtrack(0)
-        return res
-                    
+        return res           
+                
     def letterCombinations(self, digits: str) -> List[str]:
         """You are given a string digits made up of digits from 2 through 9 inclusive.
         Each digit (not including 1) is mapped to a set of characters as shown below:
         A digit could represent any one of the characters it maps to.
         Return all possible letter combinations that digits could represent. You may return the answer in any order."""
         chars = {"2":"abc", "3":"def", "4":"ghi", "5":"jkl", "6":"mno", "7":"pqrs", "8":"tuv", "9":"wxyz"}      
-        res = []
-        sol = []
-
+        res, sol = [], []
+        
         def backtrack(i):
-            if len(sol) == len(digits):
+            if i == len(digits):
                 res.append("".join(sol))
                 return
             
-            for vals in chars.get(digits[i]):
-                for val in vals:
-                    sol.append(val)
+            for values in chars.get(digits[i]):
+                for value in values:
+                    sol.append(value)
                     backtrack(i + 1)
                     sol.pop()
+                    
         if digits:
             backtrack(0)
-        return res 
-            
+        return res          
             
               
             
@@ -197,5 +195,5 @@ class Solution:
         
     
 solution = Solution()
-digits = ""
+digits = "34"
 print(solution.letterCombinations(digits))
