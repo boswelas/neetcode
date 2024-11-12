@@ -172,7 +172,23 @@ class Solution:
         Each digit (not including 1) is mapped to a set of characters as shown below:
         A digit could represent any one of the characters it maps to.
         Return all possible letter combinations that digits could represent. You may return the answer in any order."""
+        chars = {"2":"abc", "3":"def", "4":"ghi", "5":"jkl", "6":"mno", "7":"pqrs", "8":"tuv", "9":"wxyz"}      
+        res = []
+        sol = []
 
+        def backtrack(i):
+            if len(sol) == len(digits):
+                res.append("".join(sol))
+                return
+            
+            for vals in chars.get(digits[i]):
+                for val in vals:
+                    sol.append(val)
+                    backtrack(i + 1)
+                    sol.pop()
+        if digits:
+            backtrack(0)
+        return res 
             
             
               
@@ -181,5 +197,5 @@ class Solution:
         
     
 solution = Solution()
-s = "aab"
-print(solution.partition(s))
+digits = ""
+print(solution.letterCombinations(digits))
