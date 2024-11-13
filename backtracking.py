@@ -190,9 +190,6 @@ class Solution:
         return res          
             
               
-            
-        
-        
     
 solution = Solution()
 digits = "34"
